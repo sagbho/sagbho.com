@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Fonts */
+@theme {
+  --font-editorial: "PPEditorialOld", serif;
+}
+
+/* Regular */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Regular Italic */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-RegularItalic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* Bold */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Bold Italic */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-BoldItalic.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* Heavy */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-Heavy.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* Heavy Italic */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-HeavyItalic.ttf") format("truetype");
+  font-weight: 900;
+  font-style: italic;
+}
+
+/* Light */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+/* Light Italic */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-LightItalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* Medium */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Medium Italic */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-MediumItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* Thin */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+}
+
+/* Thin Italic */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-ThinItalic.ttf") format("truetype");
+  font-weight: 100;
+  font-style: italic;
+}
+
+/* UltraBold */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-UltraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* UltraBold Italic */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-UltraBoldItalic.ttf") format("truetype");
+  font-weight: 800;
+  font-style: italic;
+}
+
+/* UltraLight */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-UltraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+
+/* UltraLight Italic */
+@font-face {
+  font-family: "PPEditorialOld";
+  src: url("/fonts/PPEditorialOld-UltraLightItalic.ttf") format("truetype");
+  font-weight: 200;
+  font-style: italic;
+}
+
+/* Animations */
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-75px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.8s ease-out forwards;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(75px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.8s ease-out forwards;
+}
+
+@keyframes slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(75px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-left {
+  animation: slide-left 0.8s ease-out forwards;
+}
+
+@keyframes slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(-75px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-right {
+  animation: slide-right 0.8s ease-out forwards;
+}
