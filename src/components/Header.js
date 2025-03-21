@@ -27,7 +27,7 @@ export default function Header() {
         </a>
         <a
           className="cursor-pointer transition-all hover:text-neutral-500 flex align-middle relative py-1 px-2"
-          href="contact"
+          href="#contact"
         >
           contact
         </a>
