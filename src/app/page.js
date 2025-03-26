@@ -1,6 +1,7 @@
 "use client";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
+import { useState } from "react";
 import {
   ArrowDownIcon,
   DashIcon,
@@ -9,6 +10,8 @@ import {
 } from "@radix-ui/react-icons";
 
 export default function Home() {
+  const [currentProjectIndex, setCurrentProjectIndex] = useState(null);
+
   const projects = [
     {
       title: "ADHD Focus & Resource Hub",
@@ -102,7 +105,6 @@ export default function Home() {
     <>
       <Header />
       <div className="snap-y snap-mandatory h-screen overflow-y-scroll scroll-smooth">
-        {/* Home */}
         <section
           id="home"
           className="snap-start min-h-screen flex flex-col items-center justify-center"
@@ -116,12 +118,11 @@ export default function Home() {
           </span>
         </section>
 
-        {/* Projects */}
         <section
           id="projects"
           className="snap-start min-h-screen flex flex-col items-center justify-center w-full px-4 py-24 md:px-10"
         >
-          <h1 className="text-4xl md:text-6xl font-editorial italic p-6 md:p-10 text-center ">
+          <h1 className="text-4xl md:text-6xl font-editorial italic p-6 md:p-10 text-center">
             Projects
           </h1>
           <p className="text-base md:text-lg font-extralight pb-6 md:pb-10 tracking-tighter text-center">
@@ -129,10 +130,18 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6 w-full place-items-center">
             {projects.map((project, index) => (
-              <Card key={index} info={project} />
+              <Card
+                key={index}
+                info={project}
+                index={index}
+                currentIndex={currentProjectIndex}
+                setIndex={setCurrentProjectIndex}
+                projects={projects}
+              />
             ))}
           </div>
         </section>
+
         <section
           id="contact"
           className="snap-start min-h-screen flex flex-col items-center justify-center w-full px-4 py-24 md:px-10"
@@ -140,11 +149,9 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl font-editorial italic p-6 md:p-10 text-center">
             Contact
           </h1>
-          <p className=" flex flex-rowtext-base md:text-lg font-extralight pb-6 md:pb-10 tracking-tighter text-center">
+          <p className="flex flex-row text-base md:text-lg font-extralight pb-6 md:pb-10 tracking-tighter text-center">
             <DashIcon />
-
             <ArrowDownIcon />
-
             <DashIcon />
           </p>
           <p className="text-base md:text-lg font-extralight pb-6 md:pb-10 tracking-tighter text-center">
@@ -156,23 +163,19 @@ export default function Home() {
               href="https://www.linkedin.com/in/sagar-bhola/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center transition-all hover:transition-all hover:duration-500 hover:ease-in-out hover:bg-neutral-700/50 hover:shadow-md hover:rounded-full dark:hover:text-neutral-100 p-2"
+              className="flex items-center transition-all hover:bg-neutral-700/50 hover:shadow-md hover:rounded-full dark:hover:text-neutral-100 p-2"
             >
               <LinkedInLogoIcon width="20" height="20" />
-              <p className="flex items-center justify-center ml-1 h-7 font-editorial">
-                linkedin
-              </p>
+              <p className="ml-1 h-7 font-editorial">linkedin</p>
             </a>
             <a
               href="https://www.github.com/sagbho/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center transition-all hover:transition-all hover:duration-500 hover:ease-in-out hover:bg-neutral-700/50 hover:shadow-md hover:rounded-full dark:hover:text-neutral-100 p-2"
+              className="flex items-center transition-all hover:bg-neutral-700/50 hover:shadow-md hover:rounded-full dark:hover:text-neutral-100 p-2"
             >
               <GitHubLogoIcon width="20" height="20" />
-              <p className="flex items-center justify-center ml-1 h-7 font-editorial ">
-                github
-              </p>
+              <p className="ml-1 h-7 font-editorial">github</p>
             </a>
           </div>
         </section>
