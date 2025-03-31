@@ -19,7 +19,7 @@ export default function Home() {
         "A Figma prototype for an ADHD-friendly app offering guided focus sessions and essential resources.",
       link: "",
       type: "github",
-      vid: "https://youtu.be/U-53C4qpzOM",
+      vid: "https://www.youtube-nocookie.com/embed/U-53C4qpzOM?si=T79DpnTZOxQ52nYJ",
       skills: ["Figma"],
     },
     {
@@ -55,7 +55,7 @@ export default function Home() {
         "An application facilitating real-time translation services for healthcare professionals.",
       link: "",
       type: "github",
-      vid: "https://youtu.be/C41ID5OVVMA",
+      vid: "https://www.youtube-nocookie.com/embed/C41ID5OVVMA?si=RlAZDcaxAb9RY5em",
       skills: ["React", "Python", "Flask", "Google Gemini 1.5", "CSS"],
     },
     {

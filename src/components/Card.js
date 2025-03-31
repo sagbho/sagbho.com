@@ -1,5 +1,6 @@
 "use client";
 import {
+  ArrowTopRightIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   ChevronUpIcon,
@@ -80,17 +81,18 @@ export default function Card({
                 </div>
 
                 {info.vid && (
-                  <div className="flex justify-center md:w-[560px] md:h-[315px]">
+                  <div className="flex justify-center md:w-[560px] md:h-full">
                     <iframe
                       src={info.vid}
                       loading="lazy"
+                      referrerPolicy="strict-origin"
                       allowFullScreen
                       className="w-full"
                     />
                   </div>
                 )}
 
-                <div className="flex flex-col items-center justify-center gap-y-4 p-6 tracking-tighter">
+                <div className="flex flex-col items-center justify-center gap-y-4 p-4 tracking-tighter">
                   <div className="text-xl p-2">Skills</div>
                   <div className="flex flex-wrap justify-center gap-2">
                     {info.skills.map((skill, i) => (
@@ -102,6 +104,19 @@ export default function Card({
                       </div>
                     ))}
                   </div>
+                </div>
+                <div className="cursor-pointer p-4">
+                  <a
+                    href={info.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex
+                    items-center justify-center 
+                   text-white transition-all gap-x-2 hover:bg-neutral-500 p-3 rounded-full"
+                  >
+                    <ArrowTopRightIcon width={20} height={20} />
+                    <p>View Project</p>
+                  </a>
                 </div>
               </div>
 
