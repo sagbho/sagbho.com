@@ -31,6 +31,7 @@ export default function Card({
 
   const closeModal = () => {
     setIndex(null);
+    window.history.pushState("", document.title, window.location.pathname);
   };
 
   useEffect(() => {
@@ -168,7 +169,9 @@ export default function Card({
       {/* Thumbnail card */}
       <div
         className="flex flex-row w-full max-w-md h-64 border border-white hover:border-stone-600 cursor-pointer"
-        onClick={() => setIndex(index)}
+        onClick={() => {
+          setIndex(index);
+        }}
       >
         <div className="flex flex-col items-center justify-center w-full max-w-md h-64 overflow-y-scroll">
           <div className="text-xl font-medium italic py-6 px-2 uppercase tracking-tight text-center break-words">

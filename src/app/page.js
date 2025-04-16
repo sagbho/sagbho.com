@@ -1,7 +1,7 @@
 "use client";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowDownIcon,
   DashIcon,
@@ -87,6 +87,28 @@ export default function Home() {
     },
   ];
 
+  const slugify = (title) => title.toLowerCase().replace(/\s+/g, "-");
+
+  // Open modal if URL hash matches project
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    const index = projects.findIndex((p) => slugify(p.title) === hash);
+    if (index !== -1) {
+      setCurrentProjectIndex(index);
+    }
+  }, []);
+
+  // Optional: Support browser back/forward buttons
+  useEffect(() => {
+    const onHashChange = () => {
+      const hash = window.location.hash.replace("#", "");
+      const index = projects.findIndex((p) => slugify(p.title) === hash);
+      setCurrentProjectIndex(index !== -1 ? index : null);
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
   return (
     <>
       <Header />
@@ -121,7 +143,12 @@ export default function Home() {
                 info={project}
                 index={index}
                 currentIndex={currentProjectIndex}
-                setIndex={setCurrentProjectIndex}
+                setIndex={(i) => {
+                  setCurrentProjectIndex(i);
+                  if (i !== null) {
+                    window.location.hash = slugify(projects[i].title);
+                  }
+                }}
                 projects={projects}
               />
             ))}
