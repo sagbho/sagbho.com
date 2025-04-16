@@ -108,6 +108,23 @@ export default function Card({
                           loading="lazy"
                           className="absolute top-0 left-0 w-full h-full rounded-lg object-cover"
                         />
+                        {info.link && (
+                          <div className="cursor-pointer absolute bottom-0 left-0 p-2">
+                            <a
+                              href={info.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center text-neutral-700 outline-1 text-sm md:text-base bg-neutral-200/90 transition-all gap-x-2 hover:bg-neutral-500/75 p-2 md:p-3 rounded-full"
+                            >
+                              <ArrowTopRightIcon
+                                width={16}
+                                height={16}
+                                className="md:w-5 md:h-5"
+                              />
+                              <p className="font-bold">View Project</p>
+                            </a>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
@@ -125,20 +142,6 @@ export default function Card({
                       ))}
                     </div>
                   </div>
-
-                  {info.link && (
-                    <div className="cursor-pointer">
-                      <a
-                        href={info.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center text-white transition-all gap-x-2 hover:bg-neutral-500 p-3 rounded-full"
-                      >
-                        <ArrowTopRightIcon width={20} height={20} />
-                        <p>View Project</p>
-                      </a>
-                    </div>
-                  )}
                 </div>
               </div>
 
