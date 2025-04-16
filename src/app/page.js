@@ -17,7 +17,6 @@ export default function Home() {
       title: "ADHD Focus & Resource Hub",
       description:
         "A Figma prototype for an ADHD-friendly app offering guided focus sessions and essential resources.",
-      link: "",
       type: "github",
       vid: "https://www.youtube-nocookie.com/embed/U-53C4qpzOM?si=T79DpnTZOxQ52nYJ",
       skills: ["Figma"],
@@ -26,10 +25,9 @@ export default function Home() {
       title: "AI Invoice Processor",
       description:
         "An AI-driven solution to automate invoice processing, reducing manual effort and errors.",
-      link: "",
       type: "video soon",
-      vid: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       skills: ["Next.js", "SQL", "OpenAI LLM", "AWS", "Tailwind"],
+      img: "/aip.png",
     },
     {
       title: "Elite Tennis Academy",
@@ -37,24 +35,19 @@ export default function Home() {
         "Website for Elite Tennis Academy showcasing programs, coaches, and package options.",
       link: "https://www.elitetennisacademy.org/",
       type: "website",
-      vid: "",
       skills: ["HTML", "CSS", "JavaScript"],
+      img: "/eta.png",
     },
     {
       title: "Forum Post Classifier",
       description:
         "​A program that uses natural language processing and machine learning to categorize Piazza forum posts by topic.",
-      link: "https://www.linkedin.com/in/sagar-bhola",
-      type: "video soon",
-      vid: "",
       skills: ["C++"],
     },
     {
       title: "Healthcare Translation App",
       description:
         "An application facilitating real-time translation services for healthcare professionals.",
-      link: "",
-      type: "github",
       vid: "https://www.youtube-nocookie.com/embed/C41ID5OVVMA?si=RlAZDcaxAb9RY5em",
       skills: ["React", "Python", "Flask", "Google Gemini 1.5", "CSS"],
     },
@@ -62,18 +55,14 @@ export default function Home() {
       title: "Instagram Clone",
       description:
         "A clone of Instagram with core features like photo sharing, commenting, and liking.",
-      link: "https://www.linkedin.com/in/sagar-bhola",
-      type: "video soon",
-      vid: "",
+      img: "/insta.png",
       skills: ["React", "Python", "Flask", "SQL", "AWS", "CSS"],
     },
     {
       title: "Leetcode Tutor",
       description:
         "A platform offering personalized tutoring for Leetcode problems to enhance coding skills.",
-      link: "https://www.linkedin.com/in/sagar-bhola",
-      type: "video soon",
-      vid: "",
+      link: "https://github.com/sagbho/LeetViz",
       skills: [
         "Next.js",
         "TypeScript",
@@ -81,23 +70,20 @@ export default function Home() {
         "Clerk",
         "Tailwind",
       ],
+      img: "/lv.png",
     },
     {
       title: "Search Engine",
       description: "A scalable search engine similar to Google or Bing.",
-      link: "https://www.linkedin.com/in/sagar-bhola",
-      type: "video soon",
-      vid: "",
       skills: ["Python", "SQL", "HTML", "CSS"],
+      img: "/se.png",
     },
     {
       title: "Secure Password Manager",
       description:
         "A user dashboard with password generation and storage, offering customizable security options.",
-      link: "https://www.linkedin.com/in/sagar-bhola",
-      type: "video soon",
-      vid: "",
       skills: ["Next.js", "TypeScript", "Firebase", "Tailwind"],
+      img: "/sk.png",
     },
   ];
 

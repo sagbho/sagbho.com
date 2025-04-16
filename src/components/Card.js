@@ -6,7 +6,7 @@ import {
   ChevronUpIcon,
   Cross1Icon,
 } from "@radix-ui/react-icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 export default function Card({
   info,
@@ -16,6 +16,7 @@ export default function Card({
   projects,
 }) {
   const isModalOpen = currentIndex === index;
+  const modalRef = useRef(null);
 
   const handleProjectSlide = (direction) => {
     setIndex((prev) => {
@@ -35,6 +36,7 @@ export default function Card({
   useEffect(() => {
     if (isModalOpen) {
       document.body.classList.add("overflow-hidden");
+      modalRef.current?.focus(); // Autofocus for keydown to work
     } else {
       document.body.classList.remove("overflow-hidden");
     }
@@ -47,14 +49,22 @@ export default function Card({
     <>
       {isModalOpen && (
         <div
+          ref={modalRef}
+          tabIndex={0}
           className="fixed top-0 left-0 w-full h-full z-10 bg-black/50 flex items-center justify-center"
           onClick={closeModal}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowLeft") handleProjectSlide("prev");
+            if (e.key === "ArrowRight") handleProjectSlide("next");
+            if (e.key === "Escape") closeModal();
+          }}
         >
           <div
-            className="w-[90%] h-[90%] md:w-[70%] md:h-[70%] z-50 bg-neutral-800 rounded-lg shadow-lg p-4 overflow-hidden"
+            className="w-[90%] md:w-[70%] h-[80%] md:h-[90vh] z-50 bg-neutral-800 rounded-none md:rounded-lg shadow-lg overflow-hidden flex flex-col relative"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-end">
+            {/* Close Button */}
+            <div className="flex justify-end p-4">
               <button
                 className="text-white cursor-pointer"
                 onClick={closeModal}
@@ -63,74 +73,96 @@ export default function Card({
               </button>
             </div>
 
-            <div className="grid grid-cols-5 gap-4 items-center h-full">
-              <div
-                className="flex justify-center cursor-pointer"
-                onClick={() => handleProjectSlide("prev")}
-              >
-                <ChevronLeftIcon width={40} height={40} />
-              </div>
-
-              <div className="flex flex-col items-center justify-center col-span-3 overflow-y-auto h-full space-y-6 px-4">
-                <div className="text-xl font-medium italic py-6 uppercase tracking-tight text-center break-words">
-                  {info.title}
-                </div>
-
-                <div className="text-center tracking-tighter">
-                  <p>{info.description}</p>
-                </div>
-
-                {info.vid && (
-                  <div className="flex justify-center md:w-[560px] md:h-full">
-                    <iframe
-                      src={info.vid}
-                      loading="lazy"
-                      referrerPolicy="strict-origin"
-                      allowFullScreen
-                      className="w-full"
-                    />
+            {/* Modal Content Wrapper */}
+            <div className="relative flex-1 flex flex-col overflow-hidden">
+              {/* Scrollable Inner Content */}
+              <div className="flex-1 overflow-y-auto flex flex-col gap-4 items-center px-2 pb-32">
+                <div className="flex flex-col items-center justify-center space-y-6 px-2 md:px-4 w-full md:w-[70%]">
+                  <div className="text-xl font-medium italic py-6 uppercase tracking-tight text-center break-words">
+                    {info.title}
                   </div>
-                )}
 
-                <div className="flex flex-col items-center justify-center gap-y-4 p-4 tracking-tighter">
-                  <div className="text-xl p-2">Skills</div>
-                  <div className="flex flex-wrap justify-center gap-2">
-                    {info.skills.map((skill, i) => (
-                      <div
-                        key={i}
-                        className="flex text-center justify-center items-center px-3 py-1 rounded-xl text-sm bg-neutral-500"
-                      >
-                        {skill}
+                  <div className="text-center tracking-tighter px-2">
+                    <p>{info.description}</p>
+                  </div>
+
+                  {info.vid && (
+                    <div className="w-full max-w-4xl px-4">
+                      <div className="relative aspect-video">
+                        <iframe
+                          src={info.vid}
+                          loading="lazy"
+                          referrerPolicy="strict-origin"
+                          allowFullScreen
+                          className="absolute top-0 left-0 w-full h-full rounded-lg object-cover"
+                        />
                       </div>
-                    ))}
+                    </div>
+                  )}
+
+                  {info.img && (
+                    <div className="w-full max-w-4xl px-4">
+                      <div className="relative aspect-video">
+                        <img
+                          src={info.img}
+                          loading="lazy"
+                          className="absolute top-0 left-0 w-full h-full rounded-lg object-cover"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex flex-col items-center justify-center gap-y-4 p-4 tracking-tighter">
+                    <div className="text-xl p-2">Skills</div>
+                    <div className="flex flex-wrap justify-center gap-2">
+                      {info.skills.map((skill, i) => (
+                        <div
+                          key={i}
+                          className="flex text-center justify-center items-center px-3 py-1 rounded-xl text-sm bg-neutral-500"
+                        >
+                          {skill}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="cursor-pointer p-4">
-                  <a
-                    href={info.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex
-                    items-center justify-center 
-                   text-white transition-all gap-x-2 hover:bg-neutral-500 p-3 rounded-full"
-                  >
-                    <ArrowTopRightIcon width={20} height={20} />
-                    <p>View Project</p>
-                  </a>
+
+                  {info.link && (
+                    <div className="cursor-pointer">
+                      <a
+                        href={info.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center text-white transition-all gap-x-2 hover:bg-neutral-500 p-3 rounded-full"
+                      >
+                        <ArrowTopRightIcon width={20} height={20} />
+                        <p>View Project</p>
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <div
-                className="flex justify-center cursor-pointer"
-                onClick={() => handleProjectSlide("next")}
-              >
-                <ChevronRightIcon width={40} height={40} />
+              {/* Fixed Navigation Arrows */}
+              <div className="absolute bottom-0 left-0 w-full bg-neutral-800 border-t border-neutral-700 py-4 flex justify-evenly items-center z-20">
+                <div
+                  className="flex justify-center cursor-pointer"
+                  onClick={() => handleProjectSlide("prev")}
+                >
+                  <ChevronLeftIcon width={40} height={40} />
+                </div>
+                <div
+                  className="flex justify-center cursor-pointer"
+                  onClick={() => handleProjectSlide("next")}
+                >
+                  <ChevronRightIcon width={40} height={40} />
+                </div>
               </div>
             </div>
           </div>
         </div>
       )}
 
+      {/* Thumbnail card */}
       <div
         className="flex flex-row w-full max-w-md h-64 border border-white hover:border-stone-600 cursor-pointer"
         onClick={() => setIndex(index)}
