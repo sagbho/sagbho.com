@@ -37,7 +37,7 @@ export default function Card({
   useEffect(() => {
     if (isModalOpen) {
       document.body.classList.add("overflow-hidden");
-      modalRef.current?.focus(); // Autofocus for keydown to work
+      modalRef.current?.focus();
     } else {
       document.body.classList.remove("overflow-hidden");
     }

@@ -45,6 +45,13 @@ export default function Home() {
       skills: ["C++"],
     },
     {
+      title: "GAS Flicks",
+      description: "A personal photography website showcasing my work.",
+      link: "https://www.gasflicks.com/",
+      img: "/gf.png",
+      skills: ["HTML", "CSS", "JavaScript"],
+    },
+    {
       title: "Healthcare Translation App",
       description:
         "An application facilitating real-time translation services for healthcare professionals.",
