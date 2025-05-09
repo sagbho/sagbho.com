@@ -18,7 +18,7 @@ export default function Header() {
         </a>
         <a
           className="cursor-pointer transition-all hover:text-neutral-500 flex align-middle relative py-1 px-2"
-          href="sagbho.github.io/public/Sagar_Bhola_Resume.pdf"
+          href="files/Sagar_Bhola_Resume.pdf"
           alt="alt text"
           target="_blank"
           rel="noopener noreferrer"
