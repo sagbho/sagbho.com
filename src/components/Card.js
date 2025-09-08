@@ -175,16 +175,16 @@ export default function Card({
         }}
       >
         <div className="flex flex-col w-full h-full">
-          <div className="text-lg sm:text-xl font-medium py-3 sm:py-4 px-3 sm:px-2 uppercase tracking-tighter text-center break-words">
+          <div className="text-lg sm:text-xl font-medium px-2 tracking-tighter text-center break-words h-[60px] flex items-center justify-center border-b border-neutral-700/50">
             {info.title}
           </div>
-          <div className="flex-1 flex items-center justify-center tracking-tighter text-center px-4 py-2">
+          <div className="flex-1 flex items-center justify-center tracking-tighter text-center px-4">
             <p className="text-sm sm:text-base leading-relaxed max-w-[90%]">
               {info.description}
             </p>
           </div>
-          <div className="flex flex-wrap justify-center items-center py-3 sm:py-4 px-2 w-full tracking-tighter bg-neutral-800/30 backdrop-blur-sm border-t border-neutral-700/50 text-neutral-300 hover:text-white hover:bg-neutral-700/50 transition-all duration-300 ease-out min-h-[48px] sm:min-h-auto">
-            <ChevronUpIcon width={20} height={20} />
+          <div className="flex justify-center items-center px-2 w-full tracking-tighter bg-neutral-800/30 backdrop-blur-sm border-t border-neutral-700/50 text-neutral-300 hover:text-white hover:bg-neutral-700/50 transition-all duration-300 ease-out h-[60px]">
+            <ChevronUpIcon width={24} height={24} />
           </div>
         </div>
       </div>
