@@ -52,7 +52,7 @@ export default function Card({
         <div
           ref={modalRef}
           tabIndex={0}
-          className="fixed top-0 left-0 w-full h-full z-10 bg-black/50 flex items-center justify-center"
+          className="fixed inset-0 z-10 bg-black/60 backdrop-blur-md flex items-center justify-center p-4"
           onClick={closeModal}
           onKeyDown={(e) => {
             if (e.key === "ArrowLeft") handleProjectSlide("prev");
@@ -61,105 +61,106 @@ export default function Card({
           }}
         >
           <div
-            className="w-[90%] md:w-[70%] h-[80%] md:h-[90vh] z-50 bg-neutral-800 rounded-none md:rounded-lg shadow-lg overflow-hidden flex flex-col relative"
+            className="w-full max-w-3xl max-h-[85vh] bg-neutral-800/30 backdrop-blur-sm rounded-lg border border-neutral-700/50 shadow-lg overflow-hidden flex flex-col relative"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
-            <div className="flex justify-end p-4">
+            {/* Header with Close Button */}
+            <div className="flex justify-between items-center p-4 sm:p-6 border-b border-neutral-700/50">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-medium tracking-tight text-white">
+                {info.title}
+              </h2>
               <button
-                className="text-white cursor-pointer"
+                className="text-neutral-300 hover:text-white cursor-pointer p-3 hover:bg-neutral-700/50 hover:shadow-md bg-neutral-800/30 backdrop-blur-sm rounded-full border border-neutral-700/50 transition-all duration-300 ease-out"
                 onClick={closeModal}
               >
                 <Cross1Icon width="20" height="20" />
               </button>
             </div>
 
-            {/* Modal Content Wrapper */}
-            <div className="relative flex-1 flex flex-col overflow-hidden">
-              {/* Scrollable Inner Content */}
-              <div className="flex-1 overflow-y-auto flex flex-col gap-4 items-center px-2 pb-32">
-                <div className="flex flex-col items-center justify-center space-y-6 px-2 md:px-4 w-full md:w-[70%]">
-                  <div className="text-xl font-medium italic py-6 uppercase tracking-tight text-center break-words">
-                    {info.title}
-                  </div>
+            {/* Modal Content */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="p-4 sm:p-6 space-y-6">
+                <div className="text-center">
+                  <p className="text-sm sm:text-base md:text-lg font-extralight tracking-tighter text-neutral-300 max-w-2xl mx-auto">
+                    {info.description}
+                  </p>
+                </div>
 
-                  <div className="text-center tracking-tighter px-2">
-                    <p>{info.description}</p>
-                  </div>
-
-                  {info.vid && (
-                    <div className="w-full max-w-4xl px-4">
-                      <div className="relative aspect-video">
-                        <iframe
-                          src={info.vid}
-                          loading="lazy"
-                          referrerPolicy="strict-origin"
-                          allowFullScreen
-                          className="absolute top-0 left-0 w-full h-full rounded-lg object-cover"
-                        />
-                      </div>
+                {info.vid && (
+                  <div className="w-full">
+                    <div className="relative aspect-video rounded-lg overflow-hidden">
+                      <iframe
+                        src={info.vid}
+                        loading="lazy"
+                        referrerPolicy="strict-origin"
+                        allowFullScreen
+                        className="absolute top-0 left-0 w-full h-full"
+                      />
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {info.img && (
-                    <div className="w-full max-w-4xl px-4">
-                      <div className="relative aspect-video">
-                        <img
-                          src={info.img}
-                          loading="lazy"
-                          className="absolute top-0 left-0 w-full h-full rounded-lg object-cover"
-                        />
-                        {info.link && (
-                          <div className="cursor-pointer absolute bottom-0 left-0 p-2">
-                            <a
-                              href={info.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center justify-center text-neutral-700 outline-1 text-sm md:text-base bg-neutral-200/90 transition-all gap-x-2 hover:bg-neutral-500/75 p-2 md:p-3 rounded-full"
-                            >
-                              <ArrowTopRightIcon
-                                width={16}
-                                height={16}
-                                className="md:w-5 md:h-5"
-                              />
-                              <p className="font-bold">View Project</p>
-                            </a>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex flex-col items-center justify-center gap-y-4 p-4 tracking-tighter">
-                    <div className="text-xl p-2">Skills</div>
-                    <div className="flex flex-wrap justify-center gap-2">
-                      {info.skills.map((skill, i) => (
-                        <div
-                          key={i}
-                          className="flex text-center justify-center items-center px-3 py-1 rounded-xl text-sm bg-neutral-500"
-                        >
-                          {skill}
+                {info.img && (
+                  <div className="w-full">
+                    <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg ring-1 ring-neutral-600/30 shadow-neutral-500/20">
+                      <img
+                        src={info.img}
+                        loading="lazy"
+                        className="absolute top-0 left-0 w-full h-full object-cover"
+                      />
+                      {info.link && (
+                        <div className="absolute bottom-4 left-4">
+                          <a
+                            href={info.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center text-neutral-700 text-sm bg-neutral-200/90 transition-all gap-x-2 hover:bg-neutral-500/75 px-4 py-2 rounded-full"
+                          >
+                            <ArrowTopRightIcon width={16} height={16} />
+                            <span className="font-bold">View Project</span>
+                          </a>
                         </div>
-                      ))}
+                      )}
                     </div>
+                  </div>
+                )}
+
+                <div className="text-center">
+                  <h3 className="text-lg sm:text-xl font-medium text-white mb-4">
+                    Skills
+                  </h3>
+                  <div className="flex flex-wrap justify-center gap-3">
+                    {info.skills.map((skill, i) => (
+                      <span
+                        key={i}
+                        className="px-4 py-2 rounded-full text-sm sm:text-base bg-neutral-800/30 backdrop-blur-sm border border-neutral-700/50 text-neutral-300 font-extralight tracking-tighter"
+                      >
+                        {skill}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Fixed Navigation Arrows */}
-              <div className="absolute bottom-0 left-0 w-full bg-neutral-800 border-t border-neutral-700 py-4 flex justify-evenly items-center z-20">
-                <div
-                  className="flex justify-center cursor-pointer"
+            {/* Navigation Footer */}
+            <div className="border-t border-neutral-700/50 p-4 sm:p-6 bg-neutral-800/30 backdrop-blur-sm">
+              <div className="flex justify-between items-center">
+                <button
+                  className="flex items-center justify-center p-3 hover:bg-neutral-700/50 hover:shadow-md bg-neutral-800/30 backdrop-blur-sm rounded-full border border-neutral-700/50 text-neutral-300 hover:text-white transition-all duration-300 ease-out"
                   onClick={() => handleProjectSlide("prev")}
                 >
-                  <ChevronLeftIcon width={40} height={40} />
-                </div>
-                <div
-                  className="flex justify-center cursor-pointer"
+                  <ChevronLeftIcon width={24} height={24} />
+                </button>
+                <span className="text-sm sm:text-base text-neutral-300 font-editorial font-extralight tracking-tighter px-4 py-2 bg-neutral-800/30 backdrop-blur-sm rounded-full border border-neutral-700/50">
+                  {currentIndex + 1} of {projects.length}
+                </span>
+                <button
+                  className="flex items-center justify-center p-3 hover:bg-neutral-700/50 hover:shadow-md bg-neutral-800/30 backdrop-blur-sm rounded-full border border-neutral-700/50 text-neutral-300 hover:text-white transition-all duration-300 ease-out"
                   onClick={() => handleProjectSlide("next")}
                 >
-                  <ChevronRightIcon width={40} height={40} />
-                </div>
+                  <ChevronRightIcon width={24} height={24} />
+                </button>
               </div>
             </div>
           </div>
@@ -168,19 +169,21 @@ export default function Card({
 
       {/* Thumbnail card */}
       <div
-        className="flex flex-row w-full max-w-md h-64 border border-white hover:border-stone-600 cursor-pointer"
+        className="flex flex-row w-full max-w-sm sm:max-w-md h-56 sm:h-64 border border-neutral-700/50 hover:border-neutral-600/70 cursor-pointer transition-all duration-300 ease-out rounded-lg overflow-hidden bg-neutral-800/20 backdrop-blur-sm hover:bg-neutral-800/30"
         onClick={() => {
           setIndex(index);
         }}
       >
-        <div className="flex flex-col items-center justify-center w-full max-w-md h-64 overflow-y-scroll">
-          <div className="text-xl font-medium italic py-6 px-2 uppercase tracking-tight text-center break-words">
+        <div className="flex flex-col w-full h-full">
+          <div className="text-lg sm:text-xl font-medium py-3 sm:py-4 px-3 sm:px-2 uppercase tracking-tighter text-center break-words">
             {info.title}
           </div>
-          <div className="w-[70%] h-[50%] flex items-center justify-center tracking-tighter text-center">
-            <p>{info.description}</p>
+          <div className="flex-1 flex items-center justify-center tracking-tighter text-center px-4 py-2">
+            <p className="text-sm sm:text-base leading-relaxed max-w-[90%]">
+              {info.description}
+            </p>
           </div>
-          <div className="flex flex-wrap justify-center space-x-3 py-4 px-2 w-full tracking-tighter bg-stone-600 hover:bg-stone-700 text-white">
+          <div className="flex flex-wrap justify-center items-center py-3 sm:py-4 px-2 w-full tracking-tighter bg-neutral-800/30 backdrop-blur-sm border-t border-neutral-700/50 text-neutral-300 hover:text-white hover:bg-neutral-700/50 transition-all duration-300 ease-out min-h-[48px] sm:min-h-auto">
             <ChevronUpIcon width={20} height={20} />
           </div>
         </div>
