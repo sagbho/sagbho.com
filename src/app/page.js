@@ -214,6 +214,12 @@ export default function Home() {
             </a>
           </div>
         </section>
+
+        <section className="snap-start min-h-16 flex items-center justify-center w-full px-4 py-4">
+          <p className="text-xs text-neutral-500 font-light tracking-tighter">
+            Last updated: September 23, 2025
+          </p>
+        </section>
       </div>
     </>
   );
