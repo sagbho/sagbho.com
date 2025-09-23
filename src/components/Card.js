@@ -105,6 +105,7 @@ export default function Card({
                     <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg ring-1 ring-neutral-600/30 shadow-neutral-500/20">
                       <img
                         src={info.img}
+                        alt={`${info.title} project screenshot`}
                         loading="lazy"
                         className="absolute top-0 left-0 w-full h-full object-cover"
                       />

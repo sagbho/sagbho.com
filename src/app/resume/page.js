@@ -37,11 +37,11 @@ export default function Resume() {
 
             <p className="text-lg md:text-xl text-neutral-300 font-light leading-relaxed tracking-tighter">
               If you are a recruiter or hiring manager interested in viewing my
-              résumé, I'd be happy to share it with you directly.
+              résumé, I&apos;d be happy to share it with you directly.
             </p>
 
             <p className="text-base md:text-lg text-neutral-400 font-extralight tracking-tighter">
-              Please reach out to me via email and I'll send you the most
+              Please reach out to me via email and I&apos;ll send you the most
               up-to-date version along with any additional information you might
               need.
             </p>

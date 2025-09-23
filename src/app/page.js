@@ -1,7 +1,7 @@
 "use client";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   ArrowDownIcon,
   DashIcon,
@@ -12,93 +12,96 @@ import {
 export default function Home() {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(null);
 
-  const projects = [
-    {
-      title: "ADHD Focus & Resource Hub",
-      description:
-        "A Figma prototype for an ADHD-friendly app offering guided focus sessions and essential resources.",
-      type: "github",
-      vid: "https://www.youtube-nocookie.com/embed/U-53C4qpzOM?si=T79DpnTZOxQ52nYJ",
-      skills: ["Figma"],
-    },
-    {
-      title: "AI Invoice Processor",
-      description:
-        "An AI-driven solution to automate invoice processing, reducing manual effort and errors.",
-      type: "video soon",
-      skills: [
-        "Next.js",
-        "SQL",
-        "Custom Document Processing Pipeline",
-        "AWS",
-        "Tailwind",
-      ],
-      img: "/aip.png",
-    },
-    {
-      title: "Elite Tennis Academy",
-      description:
-        "Website for Elite Tennis Academy showcasing programs, coaches, and package options.",
-      link: "https://www.elitetennisacademy.org/",
-      type: "website",
-      skills: ["HTML", "CSS", "JavaScript"],
-      img: "/eta.png",
-    },
-    {
-      title: "Forum Post Classifier",
-      description:
-        "​A program that uses natural language processing and machine learning to categorize Piazza forum posts by topic.",
-      skills: ["C++"],
-    },
-    {
-      title: "GAS Flicks",
-      description: "A personal photography website showcasing my work.",
-      link: "https://www.gasflicks.com/",
-      img: "/gf.png",
-      skills: ["HTML", "CSS", "JavaScript"],
-    },
-    {
-      title: "Healthcare Translation App",
-      description:
-        "An application facilitating real-time translation services for healthcare professionals.",
-      vid: "https://www.youtube-nocookie.com/embed/C41ID5OVVMA?si=RlAZDcaxAb9RY5em",
-      skills: ["React", "Python", "Flask", "Google Gemini 1.5", "CSS"],
-    },
-    {
-      title: "Instagram Clone",
-      description:
-        "A clone of Instagram with core features like photo sharing, commenting, and liking.",
-      img: "/insta.png",
-      skills: ["React", "Python", "Flask", "SQL", "AWS", "CSS"],
-    },
-    {
-      title: "Leetcode Tutor",
-      description:
-        "A platform offering personalized tutoring for Leetcode problems to enhance coding skills.",
-      link: "https://github.com/sagbho/LeetViz",
-      skills: [
-        "Next.js",
-        "TypeScript",
-        "Google Gemini 2.0",
-        "Clerk",
-        "Tailwind",
-      ],
-      img: "/lv.png",
-    },
-    {
-      title: "Search Engine",
-      description: "A scalable search engine similar to Google or Bing.",
-      skills: ["Python", "SQL", "HTML", "CSS"],
-      img: "/se.png",
-    },
-    {
-      title: "Secure Password Manager",
-      description:
-        "A user dashboard with password generation and storage, offering customizable security options.",
-      skills: ["Next.js", "TypeScript", "Firebase", "Tailwind"],
-      img: "/sk.png",
-    },
-  ];
+  const projects = useMemo(
+    () => [
+      {
+        title: "ADHD Focus & Resource Hub",
+        description:
+          "A Figma prototype for an ADHD-friendly app offering guided focus sessions and essential resources.",
+        type: "github",
+        vid: "https://www.youtube-nocookie.com/embed/U-53C4qpzOM?si=T79DpnTZOxQ52nYJ",
+        skills: ["Figma"],
+      },
+      {
+        title: "AI Invoice Processor",
+        description:
+          "An AI-driven solution to automate invoice processing, reducing manual effort and errors.",
+        type: "video soon",
+        skills: [
+          "Next.js",
+          "SQL",
+          "Custom Document Processing Pipeline",
+          "AWS",
+          "Tailwind",
+        ],
+        img: "/aip.png",
+      },
+      {
+        title: "Elite Tennis Academy",
+        description:
+          "Website for Elite Tennis Academy showcasing programs, coaches, and package options.",
+        link: "https://www.elitetennisacademy.org/",
+        type: "website",
+        skills: ["HTML", "CSS", "JavaScript"],
+        img: "/eta.png",
+      },
+      {
+        title: "Forum Post Classifier",
+        description:
+          "​A program that uses natural language processing and machine learning to categorize Piazza forum posts by topic.",
+        skills: ["C++"],
+      },
+      {
+        title: "GAS Flicks",
+        description: "A personal photography website showcasing my work.",
+        link: "https://www.gasflicks.com/",
+        img: "/gf.png",
+        skills: ["HTML", "CSS", "JavaScript"],
+      },
+      {
+        title: "Healthcare Translation App",
+        description:
+          "An application facilitating real-time translation services for healthcare professionals.",
+        vid: "https://www.youtube-nocookie.com/embed/C41ID5OVVMA?si=RlAZDcaxAb9RY5em",
+        skills: ["React", "Python", "Flask", "Google Gemini 1.5", "CSS"],
+      },
+      {
+        title: "Instagram Clone",
+        description:
+          "A clone of Instagram with core features like photo sharing, commenting, and liking.",
+        img: "/insta.png",
+        skills: ["React", "Python", "Flask", "SQL", "AWS", "CSS"],
+      },
+      {
+        title: "Leetcode Tutor",
+        description:
+          "A platform offering personalized tutoring for Leetcode problems to enhance coding skills.",
+        link: "https://github.com/sagbho/LeetViz",
+        skills: [
+          "Next.js",
+          "TypeScript",
+          "Google Gemini 2.0",
+          "Clerk",
+          "Tailwind",
+        ],
+        img: "/lv.png",
+      },
+      {
+        title: "Search Engine",
+        description: "A scalable search engine similar to Google or Bing.",
+        skills: ["Python", "SQL", "HTML", "CSS"],
+        img: "/se.png",
+      },
+      {
+        title: "Secure Password Manager",
+        description:
+          "A user dashboard with password generation and storage, offering customizable security options.",
+        skills: ["Next.js", "TypeScript", "Firebase", "Tailwind"],
+        img: "/sk.png",
+      },
+    ],
+    []
+  );
 
   const slugify = (title) => title.toLowerCase().replace(/\s+/g, "-");
 
@@ -109,7 +112,7 @@ export default function Home() {
     if (index !== -1) {
       setCurrentProjectIndex(index);
     }
-  }, []);
+  }, [projects]);
 
   // Optional: Support browser back/forward buttons
   useEffect(() => {
@@ -120,7 +123,7 @@ export default function Home() {
     };
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
-  }, []);
+  }, [projects]);
 
   return (
     <>
@@ -160,6 +163,12 @@ export default function Home() {
                   setCurrentProjectIndex(i);
                   if (i !== null) {
                     window.location.hash = slugify(projects[i].title);
+                  } else {
+                    window.history.pushState(
+                      "",
+                      document.title,
+                      window.location.pathname
+                    );
                   }
                 }}
                 projects={projects}
