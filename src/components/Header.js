@@ -13,8 +13,7 @@ export default function Header() {
     {
       id: "resume",
       label: "résumé",
-      href: "files/Sagar_Bhola_Resume.pdf",
-      external: true,
+      href: "/resume",
     },
     { id: "contact", label: "contact", href: "#contact" },
   ];
