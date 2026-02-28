@@ -3,8 +3,7 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useState, useEffect, useMemo } from "react";
 import {
-  ArrowDownIcon,
-  DashIcon,
+  EnvelopeClosedIcon,
   GitHubLogoIcon,
   LinkedInLogoIcon,
 } from "@radix-ui/react-icons";
@@ -59,6 +58,12 @@ export default function Home() {
         skills: ["HTML", "CSS", "JavaScript"],
       },
       {
+        title: "YesNoFingers",
+        description:
+          "Medical translation app for Michigan free clinics—speech-to-text and translation to support patient-provider communication.",
+        skills: ["Next.js", "AWS Translate", "OpenAI Whisper", "Vercel"],
+      },
+      {
         title: "Healthcare Translation App",
         description:
           "An application facilitating real-time translation services for healthcare professionals.",
@@ -100,7 +105,7 @@ export default function Home() {
         img: "/sk.png",
       },
     ],
-    []
+    [],
   );
 
   const slugify = (title) => title.toLowerCase().replace(/\s+/g, "-");
@@ -151,6 +156,10 @@ export default function Home() {
           </h1>
           <p className="text-sm sm:text-base md:text-lg font-extralight pb-6 md:pb-10 tracking-tighter text-center max-w-2xl">
             A showcase of precise engineering.
+            <br />
+            <span className="text-xs sm:text-sm md:text-base font-extralight tracking-tighter">
+              (A non-exhaustive list.)
+            </span>
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full max-w-7xl place-items-center px-2">
             {projects.map((project, index) => (
@@ -167,7 +176,7 @@ export default function Home() {
                     window.history.pushState(
                       "",
                       document.title,
-                      window.location.pathname
+                      window.location.pathname,
                     );
                   }
                 }}
@@ -184,16 +193,15 @@ export default function Home() {
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-editorial italic p-4 sm:p-6 md:p-10 text-center">
             Contact
           </h1>
-          <p className="flex flex-row text-base md:text-lg font-extralight pb-6 md:pb-10 tracking-tighter text-center">
-            <DashIcon />
-            <ArrowDownIcon />
-            <DashIcon />
-          </p>
-          <p className="text-sm sm:text-base md:text-lg font-extralight pb-6 md:pb-10 tracking-tighter text-center px-4">
-            sagbho[at]umich[dot]edu
-          </p>
-          <p className="pb-6 text-sm sm:text-base">or</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+          <div className="w-24 sm:w-32 h-px bg-neutral-500/60 mb-6 md:mb-10" />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pb-6 md:pb-10">
+            <a
+              href="mailto:sagbho@umich.edu"
+              className="flex items-center transition-all duration-300 ease-out hover:bg-neutral-700/50 hover:shadow-md bg-neutral-800/30 backdrop-blur-sm rounded-full border border-neutral-700/50 px-6 py-3 text-neutral-300 hover:text-white font-editorial"
+            >
+              <EnvelopeClosedIcon width="20" height="20" />
+              <span className="ml-2 text-lg">email</span>
+            </a>
             <a
               href="https://www.linkedin.com/in/sagar-bhola/"
               target="_blank"
@@ -217,7 +225,7 @@ export default function Home() {
 
         <section className="snap-start min-h-16 flex items-center justify-center w-full px-4 py-4">
           <p className="text-xs text-neutral-500 font-light tracking-tighter">
-            Last updated: September 23, 2025
+            Last updated: February 28, 2026
           </p>
         </section>
       </div>
