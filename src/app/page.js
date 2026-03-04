@@ -53,7 +53,7 @@ export default function Home() {
       {
         title: "GAS Flicks",
         description: "A personal photography website showcasing my work.",
-        link: "gasflicks.com",
+        link: "gasflicks",
         img: "/gf.png",
         skills: ["HTML", "CSS", "JavaScript"],
       },
