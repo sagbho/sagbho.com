@@ -2,6 +2,7 @@ BEGIN:VCARD
 VERSION:3.0
 FN:Sagar Bhola
 N:Bhola;Sagar;;;
+PHOTO;VALUE=URI;TYPE=JPEG:https://sagbho.github.io/files/IMG_0988%202.jpg
 EMAIL;TYPE=INTERNET:sagbho@umich.edu
 URL;TYPE=portfolio:https://sagbho.github.io
 URL;TYPE=linkedin:https://www.linkedin.com/in/sagar-bhola/
