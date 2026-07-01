@@ -33,9 +33,8 @@ const CONTACT_LINKS = [
 function ContactButtons({ compact = false }) {
   return (
     <div
-      className={`flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 ${
-        compact ? "" : "pb-6 md:pb-10"
-      }`}
+      className={`flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 ${compact ? "" : "pb-6 md:pb-10"
+        }`}
     >
       {CONTACT_LINKS.map(({ label, href, Icon }) => (
         <a
@@ -71,14 +70,6 @@ export default function Home() {
   const projects = useMemo(
     () => [
       {
-        title: "ADHD Focus & Resource Hub",
-        description:
-          "A Figma prototype for an ADHD-friendly app offering guided focus sessions and essential resources.",
-        type: "github",
-        vid: "https://www.youtube-nocookie.com/embed/U-53C4qpzOM?si=T79DpnTZOxQ52nYJ",
-        skills: ["Figma"],
-      },
-      {
         title: "AI Invoice Processor",
         description:
           "An AI-driven solution to automate invoice processing, reducing manual effort and errors.",
@@ -90,7 +81,30 @@ export default function Home() {
           "AWS",
           "Tailwind",
         ],
-        img: "/aip.png",
+        img: "/aipv2.png",
+      },
+      {
+        title: "TCG Portfolio Evaluator",
+        description:
+          "A web application that evaluates the value of a Pokemon card collection using camera image input and AI-powered card recognition.",
+        type: "video soon",
+        skills: ["React", "TypeScript", "Python", "OpenCV", "Express.js", "MySQL", "Tailwind"],
+        img: "/tcg.png",
+      },
+      {
+        title: "Instagram Clone",
+        description:
+          "A clone of Instagram with core features like photo sharing, commenting, and liking.",
+        img: "/insta.png",
+        skills: ["React", "Python", "Flask", "SQL", "AWS", "CSS"],
+      },
+      {
+        title: "ADHD Focus & Resource Hub",
+        description:
+          "A Figma prototype for an ADHD-friendly app offering guided focus sessions and essential resources.",
+        type: "github",
+        vid: "https://www.youtube-nocookie.com/embed/U-53C4qpzOM?si=T79DpnTZOxQ52nYJ",
+        skills: ["Figma"],
       },
       {
         title: "Elite Tennis Academy",
@@ -110,7 +124,7 @@ export default function Home() {
       {
         title: "GAS Flicks",
         description: "A personal photography website showcasing my work.",
-        link: "https://www.gasflicks.com/",
+        link: "gasflicks",
         img: "/gf.png",
         skills: ["HTML", "CSS", "JavaScript"],
       },
@@ -126,13 +140,6 @@ export default function Home() {
           "An application facilitating real-time translation services for healthcare professionals.",
         vid: "https://www.youtube-nocookie.com/embed/C41ID5OVVMA?si=RlAZDcaxAb9RY5em",
         skills: ["React", "Python", "Flask", "Google Gemini 1.5", "CSS"],
-      },
-      {
-        title: "Instagram Clone",
-        description:
-          "A clone of Instagram with core features like photo sharing, commenting, and liking.",
-        img: "/insta.png",
-        skills: ["React", "Python", "Flask", "SQL", "AWS", "CSS"],
       },
       {
         title: "Leetcode Tutor",
