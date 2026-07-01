@@ -13,7 +13,16 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Sagar Bhola",
-  description: "Sagar Bhola's portfolio",
+  description:
+    "Sagar Bhola's portfolio, project work, and professional contact information.",
+  openGraph: {
+    title: "Sagar Bhola",
+    description:
+      "Portfolio, project work, and professional contact information for Sagar Bhola.",
+    url: "https://sagbho.github.io",
+    siteName: "Sagar Bhola",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }) {

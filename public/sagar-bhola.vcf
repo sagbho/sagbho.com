@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Sagar Bhola
+N:Bhola;Sagar;;;
+EMAIL;TYPE=INTERNET:sagbho@umich.edu
+URL;TYPE=portfolio:https://sagbho.github.io
+URL;TYPE=linkedin:https://www.linkedin.com/in/sagar-bhola/
+URL;TYPE=github:https://www.github.com/sagbho/
+NOTE:New grad software engineer focused in computer security, networks, and AI.
+END:VCARD

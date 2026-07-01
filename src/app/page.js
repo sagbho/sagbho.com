@@ -3,10 +3,67 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import { useState, useEffect, useMemo } from "react";
 import {
+  DownloadIcon,
   EnvelopeClosedIcon,
   GitHubLogoIcon,
   LinkedInLogoIcon,
 } from "@radix-ui/react-icons";
+
+const CONTACT_LINKS = [
+  {
+    label: "email",
+    value: "sagbho@umich.edu",
+    href: "mailto:sagbho@umich.edu",
+    Icon: EnvelopeClosedIcon,
+  },
+  {
+    label: "linkedin",
+    value: "linkedin.com/in/sagar-bhola",
+    href: "https://www.linkedin.com/in/sagar-bhola/",
+    Icon: LinkedInLogoIcon,
+  },
+  {
+    label: "github",
+    value: "github.com/sagbho",
+    href: "https://www.github.com/sagbho/",
+    Icon: GitHubLogoIcon,
+  },
+];
+
+function ContactButtons({ compact = false }) {
+  return (
+    <div
+      className={`flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 ${
+        compact ? "" : "pb-6 md:pb-10"
+      }`}
+    >
+      {CONTACT_LINKS.map(({ label, href, Icon }) => (
+        <a
+          key={label}
+          href={href}
+          target={href.startsWith("http") ? "_blank" : undefined}
+          rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+          className="flex items-center transition-all duration-300 ease-out hover:bg-neutral-700/50 hover:shadow-md bg-neutral-800/30 backdrop-blur-sm rounded-full border border-neutral-700/50 px-6 py-3 text-neutral-300 hover:text-white font-editorial"
+        >
+          <Icon width="20" height="20" />
+          <span className="ml-2 text-lg">{label}</span>
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function SaveContactButton() {
+  return (
+    <a
+      href="/sagar-bhola.vcf"
+      className="flex items-center transition-all duration-300 ease-out hover:bg-neutral-700/50 hover:shadow-md bg-neutral-800/30 backdrop-blur-sm rounded-full border border-neutral-700/50 px-6 py-3 text-neutral-300 hover:text-white font-editorial"
+    >
+      <DownloadIcon width="20" height="20" />
+      <span className="ml-2 text-lg">save contact</span>
+    </a>
+  );
+}
 
 export default function Home() {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(null);
@@ -141,10 +198,12 @@ export default function Home() {
           <h1 className="flex text-center text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-editorial italic opacity-0 animate-slide-down p-4 sm:p-6 md:p-10">
             Sagar Bhola
           </h1>
-          <span className="text-base sm:text-lg md:text-xl font-extralight pb-6 md:pb-10 tracking-tighter opacity-0 animate-slide-up text-center max-w-lg">
-            Engineering <span className="italic">solutions</span> for the
-            future.
-          </span>
+          <div className="opacity-0 animate-slide-up text-center flex flex-col items-center">
+            <p className="text-base sm:text-lg md:text-xl font-extralight pb-4 tracking-tighter max-w-2xl">
+              Software engineering, automation, and AI product work.
+            </p>
+            <SaveContactButton />
+          </div>
         </section>
 
         <section
@@ -193,39 +252,18 @@ export default function Home() {
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-editorial italic p-4 sm:p-6 md:p-10 text-center">
             Contact
           </h1>
+          <p className="text-sm sm:text-base md:text-lg font-extralight pb-6 tracking-tighter text-center max-w-2xl">
+            Best way to reach me is email. LinkedIn is useful for staying in
+            touch, and GitHub has a broader view of what I build.
+          </p>
           <div className="w-24 sm:w-32 h-px bg-neutral-500/60 mb-6 md:mb-10" />
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pb-6 md:pb-10">
-            <a
-              href="mailto:sagbho@umich.edu"
-              className="flex items-center transition-all duration-300 ease-out hover:bg-neutral-700/50 hover:shadow-md bg-neutral-800/30 backdrop-blur-sm rounded-full border border-neutral-700/50 px-6 py-3 text-neutral-300 hover:text-white font-editorial"
-            >
-              <EnvelopeClosedIcon width="20" height="20" />
-              <span className="ml-2 text-lg">email</span>
-            </a>
-            <a
-              href="https://www.linkedin.com/in/sagar-bhola/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center transition-all duration-300 ease-out hover:bg-neutral-700/50 hover:shadow-md bg-neutral-800/30 backdrop-blur-sm rounded-full border border-neutral-700/50 px-6 py-3 text-neutral-300 hover:text-white font-editorial"
-            >
-              <LinkedInLogoIcon width="20" height="20" />
-              <span className="ml-2 text-lg">linkedin</span>
-            </a>
-            <a
-              href="https://www.github.com/sagbho/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center transition-all duration-300 ease-out hover:bg-neutral-700/50 hover:shadow-md bg-neutral-800/30 backdrop-blur-sm rounded-full border border-neutral-700/50 px-6 py-3 text-neutral-300 hover:text-white font-editorial"
-            >
-              <GitHubLogoIcon width="20" height="20" />
-              <span className="ml-2 text-lg">github</span>
-            </a>
-          </div>
+          <ContactButtons />
+          <SaveContactButton />
         </section>
 
         <section className="snap-start min-h-16 flex items-center justify-center w-full px-4 py-4">
           <p className="text-xs text-neutral-500 font-light tracking-tighter">
-            Last updated: February 28, 2026
+            Last updated: July 1, 2026
           </p>
         </section>
       </div>
