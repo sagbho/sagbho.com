@@ -114,8 +114,15 @@ export default function Header() {
     document.title = titles[activeLink] ?? SITE_TITLE;
   }, [activeLink]);
 
-  const handleLinkClick = () => {
-    // Active link updates via navigation / hash / scroll
+  const handleLinkClick = (event, link) => {
+    if (pathname !== "/" || link.id !== "home") return;
+
+    event.preventDefault();
+    setActiveLink("home");
+    window.history.pushState(null, "", "/");
+
+    const scrollContainer = document.querySelector(".snap-y.snap-mandatory");
+    scrollContainer?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -131,7 +138,7 @@ export default function Header() {
             key={link.id}
             href={link.href}
             className="relative cursor-pointer flex items-center py-2 px-4 text-center rounded-full z-10 text-neutral-300 hover:text-white transition-colors duration-200"
-            onClick={handleLinkClick}
+            onClick={(event) => handleLinkClick(event, link)}
             onMouseEnter={() => setHoverLink(link.id)}
             onMouseLeave={() => setHoverLink(null)}
           >
