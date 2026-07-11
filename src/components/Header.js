@@ -137,6 +137,8 @@ export default function Header() {
           <Link
             key={link.id}
             href={link.href}
+            target={link.id === "resume" ? "_blank" : undefined}
+            rel={link.id === "resume" ? "noopener noreferrer" : undefined}
             className="relative cursor-pointer flex items-center py-2 px-4 text-center rounded-full z-10 text-neutral-300 hover:text-white transition-colors duration-200"
             onClick={(event) => handleLinkClick(event, link)}
             onMouseEnter={() => setHoverLink(link.id)}
