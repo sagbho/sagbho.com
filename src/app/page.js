@@ -70,6 +70,15 @@ export default function Home() {
   const projects = useMemo(
     () => [
       {
+        title: "Vision-Based Autonomous Driving Agent",
+        description:
+          "A reinforcement learning agent trained to navigate a simulated driving environment using visual input.",
+        type: "video soon",
+        skills: ["Python", "PyTorch", "DXCam", "Computer Vision"],
+        img: "/vbd.png",
+      },
+      
+      {
         title: "AI Invoice Processor",
         description:
           "An AI-driven solution to automate invoice processing, reducing manual effort and errors.",
@@ -270,7 +279,7 @@ export default function Home() {
 
         <section className="snap-start min-h-16 flex items-center justify-center w-full px-4 py-4">
           <p className="text-xs text-neutral-500 font-light tracking-tighter">
-            Last updated: July 1, 2026
+            Last updated: August 13, 2026
           </p>
         </section>
       </div>
