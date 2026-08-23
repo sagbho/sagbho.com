@@ -8,23 +8,38 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: "TWK Lausanne", sans-serif;
+  --font-mono: var(--font-ibm-plex-mono);
+  --font-lausanne: "TWK Lausanne", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #111111;
     --foreground: #ededed;
   }
 }
 
 body {
+  position: relative;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "TWK Lausanne", sans-serif;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background: url("/black-paper.png") repeat;
 }
 
+body > * {
+  position: relative;
+  z-index: 1;
+}
 html {
   scroll-behavior: smooth;
 }
@@ -159,6 +174,62 @@ html {
   font-family: "PPEditorialOld";
   src: url("/fonts/PPEditorialOld-UltraLightItalic.ttf") format("truetype");
   font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TWK Lausanne";
+  src: url("/fonts/TWKLausanne_300-s.p.26okkyh4jopn7.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TWK Lausanne";
+  src: url("/fonts/TWKLausanne_300Italic-s.p.2_zpglb_5doqk.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TWK Lausanne";
+  src: url("/fonts/TWKLausanne_350-s.p.07jgy4ljbbs1q.ttf") format("truetype");
+  font-weight: 350;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TWK Lausanne";
+  src: url("/fonts/TWKLausanne_350Italic-s.p.1jfo6w0jtghhq.ttf") format("truetype");
+  font-weight: 350;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TWK Lausanne";
+  src: url("/fonts/TWKLausanne_400-s.p.0isvi2pcnytzo.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TWK Lausanne";
+  src: url("/fonts/TWKLausanne_400Italic-s.p.3stfvuuqo53ht.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TWK Lausanne";
+  src: url("/fonts/TWKLausanne_700-s.p.03b70dzuw0cw3.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TWK Lausanne";
+  src: url("/fonts/TWKLausanne_700Italic-s.p.1m9hit8eawobu.ttf") format("truetype");
+  font-weight: 700;
   font-style: italic;
 }
 

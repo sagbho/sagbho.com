@@ -1,14 +1,10 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: "400",
 });
 
 export const metadata = {
@@ -19,7 +15,7 @@ export const metadata = {
     title: "Sagar Bhola",
     description:
       "Portfolio, project work, and professional contact information for Sagar Bhola.",
-    url: "https://sagbho.github.io",
+    url: "https://sagbho.com",
     siteName: "Sagar Bhola",
     type: "website",
   },
@@ -29,7 +25,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${ibmPlexMono.variable} antialiased`}
       >
         {children}
       </body>

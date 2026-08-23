@@ -132,7 +132,7 @@ export default function Header() {
       transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
       className="absolute top-4 sm:top-6 left-1/2 -translate-x-1/2 px-4 sm:px-6 z-[9999]"
     >
-      <nav className="relative inline-flex justify-center items-center sm:space-x-3 gap-2 sm:gap-0 px-6 sm:px-8 py-3 sm:py-4 font-editorial font-extralight text-lg sm:text-xl md:text-2xl bg-neutral-800/30 backdrop-blur-sm rounded-full border border-neutral-700/50">
+      <nav className="relative inline-flex justify-center items-center sm:space-x-3 gap-2 sm:gap-0 px-6 sm:px-8 py-3 sm:py-4 font-mono font-extralight text-lg sm:text-xl md:text-2xl bg-neutral-800/30 backdrop-blur-sm rounded-full border border-neutral-700/50">
         {links.map((link) => (
           <Link
             key={link.id}
