@@ -47,7 +47,7 @@ export default function Home() {
           "Built ETL pipelines to automate Medicaid cost reporting.",
         link: "https://www.cienahealthcare.com",
         startDate: "May 2025",
-        endDate: "NOW",
+        endDate: "Present",
       },
       {
         company: "Networthy",
@@ -55,7 +55,7 @@ export default function Home() {
         description: "All your revenue. One place. Across all platforms.",
         link: "https://www.linkedin.com/company/gonetworthy/",
         startDate: "Aug 2026",
-        endDate: "NOW",
+        endDate: "Present",
       },
 
       {
@@ -72,7 +72,7 @@ export default function Home() {
         description: "A personal photography website showcasing my work.",
         link: "https://sagbho.com/gasflicks",
         startDate: "Jan 2023",
-        endDate: "?",
+        endDate: "Present",
       },
     ],
     [],

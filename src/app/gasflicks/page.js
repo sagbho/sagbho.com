@@ -7,8 +7,8 @@ export default function page() {
     <>
       {/* <Header /> */}
       <div className="flex flex-col items-center justify-center h-screen">
-        <h1>gasflicks.com is closed indefinitely</h1>
-        <p>Sorry for the inconvenience. Please check back later.</p>
+        <h1>gasflicks.com will be back.</h1>
+        <p>Site is under maintenance. Please check back later.</p>
       </div>
     </>
   );
