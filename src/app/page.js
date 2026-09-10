@@ -253,8 +253,8 @@ export default function Home() {
           <section className="flex w-full flex-col gap-10 pt-12 opacity-0 animate-slide-up">
             <div>
             <h1 className="uppercase text-xs pb-3 text-neutral-400">Bio</h1>
-            <p className="max-w-md text-sm leading-relaxed">
-              Graduate from the University of Michigan with a B.S. in Computer Science.
+            <p className="max-w-xl text-sm leading-relaxed">
+              University of Michigan Computer Science graduate, currently pursuing an M.S. in Computer Science with a specialization in Artificial Intelligence at Georgia Tech.
             </p>
             </div>
             <div>
