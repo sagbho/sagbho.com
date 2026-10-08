@@ -254,7 +254,7 @@ export default function Home() {
             <div>
             <h1 className="uppercase text-xs pb-3 text-neutral-400">Bio</h1>
             <p className="max-w-xl text-sm leading-relaxed">
-              University of Michigan Computer Science graduate, currently pursuing an M.S. in Computer Science with a specialization in Artificial Intelligence at Georgia Tech.
+              University of Michigan Computer Science graduate, class of 2025.
             </p>
             </div>
             <div>
