@@ -11,7 +11,7 @@ export default function Home() {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(null);
   const [moreProjectsOpen, setMoreProjectsOpen] = useState(false);
   const contactRef = useRef(null);
-  const projectFocusRef = useRef(false);
+  const pendingProjectCenter = useRef(null);
   const [copyStatus, setCopyStatus] = useState("");
   const openContact = async () => {
     setCopyStatus("Copying email…");
@@ -31,10 +31,10 @@ export default function Home() {
   const reveal = {
     initial: { opacity: 1, y: 0 },
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, amount: 0.15 },
+    viewport: { once: false, amount: 0.08, margin: "0px 0px -32px 0px" },
     transition: { duration: reducedMotion ? 0 : 0.4, ease: "easeOut" },
   };
-  if (!reducedMotion) reveal.initial = { opacity: 0, y: 18 };
+  if (!reducedMotion) reveal.initial = { opacity: 0, y: 14 };
   const travel = titleBounds ? Math.max(120, titleBounds.top - titleBounds.targetTop) : 160;
   const progress = useTransform(scrollY, [0, travel], [0, 1]);
   const smoothProgress = useSpring(progress, { stiffness: 500, damping: 45, mass: 0.15 });
@@ -83,140 +83,6 @@ export default function Home() {
     window.addEventListener("resize", measure);
     return () => { active = false; window.removeEventListener("resize", measure); };
   }, []);
-  useEffect(() => {
-    let timer;
-    let touchActive = false;
-    let settling = false;
-    let lastPosition = window.scrollY;
-    let direction = 1;
-    let wheelTarget = null;
-    let wheelFrame;
-    const animateTo = target => {
-      cancelAnimationFrame(wheelFrame);
-      clearTimeout(timer);
-      wheelTarget = target;
-      settling = true;
-      const start = window.scrollY;
-      const startedAt = performance.now();
-      const duration = reducedMotion ? 0 : 600;
-      const frame = now => {
-        const progress = duration ? Math.min(1, (now - startedAt) / duration) : 1;
-        // Ease into and out of each section over a consistent duration.
-        const eased = progress < 0.5
-          ? 4 * progress ** 3
-          : 1 - (-2 * progress + 2) ** 3 / 2;
-        window.scrollTo({ top: start + (target - start) * eased, behavior: "instant" });
-        if (progress < 1) {
-          wheelFrame = requestAnimationFrame(frame);
-        } else {
-          wheelTarget = null;
-          settling = false;
-          clearTimeout(timer);
-        }
-      };
-      wheelFrame = requestAnimationFrame(frame);
-    };
-    const readingRanges = () => [...document.querySelectorAll(".work-section, .about-section")].map(section => {
-      const rect = section.getBoundingClientRect();
-      const headerHeight = document.querySelector(".site-header").offsetHeight;
-      return {
-        start: rect.top + window.scrollY - headerHeight,
-        end: rect.bottom + window.scrollY - window.innerHeight,
-      };
-    });
-    const settle = () => {
-      if (projectFocusRef.current || touchActive || wheelTarget !== null || contactRef.current?.open) return;
-      if (settling) { settling = false; return; }
-      // Preserve the reading position in any overflowing content section.
-      if (readingRanges().some(range => window.scrollY >= range.start - 2 && window.scrollY <= range.end + 2)) return;
-      const headerHeight = document.querySelector(".site-header").offsetHeight;
-      const sections = [...document.querySelectorAll(".hero, .work-section, .about-section")];
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const position = window.scrollY;
-      const ranges = sections.map(section => {
-        const rect = section.getBoundingClientRect();
-        const start = Math.max(0, Math.min(maxScroll, rect.top + position - headerHeight));
-        const end = Math.max(start, Math.min(maxScroll, rect.bottom + position - window.innerHeight));
-        const contentHeight = section.offsetHeight - parseFloat(getComputedStyle(section).paddingTop) - parseFloat(getComputedStyle(section).paddingBottom);
-        return { start, end, isTall: contentHeight > window.innerHeight - headerHeight };
-      });
-      // Tall sections have a bottom stop so their remaining content stays reachable.
-      const boundaries = [...new Set(ranges.flatMap(({ start, end, isTall }) => isTall ? [start, end] : [start]))].sort((a, b) => a - b);
-      if (boundaries.some(value => Math.abs(position - value) <= 2)) return;
-      // Leave the footer reachable after the final section.
-      if (position > ranges[ranges.length - 1].end) return;
-      const candidates = boundaries.filter(value => direction > 0 ? value > position + 2 : value < position - 2);
-      if (!candidates.length) return;
-      const target = direction > 0 ? Math.min(...candidates) : Math.max(...candidates);
-      animateTo(target);
-    };
-    const onScroll = () => {
-      const position = window.scrollY;
-      if (!settling && position !== lastPosition) direction = Math.sign(position - lastPosition);
-      lastPosition = position;
-      clearTimeout(timer);
-      timer = setTimeout(settle, 160);
-    };
-    const interrupt = () => {
-      projectFocusRef.current = false;
-      settling = false;
-      wheelTarget = null;
-      cancelAnimationFrame(wheelFrame);
-    };
-    const onWheel = event => {
-      if (event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY) || !event.deltaY || contactRef.current?.open) return;
-      projectFocusRef.current = false;
-      const position = window.scrollY;
-      const canReadFurther = readingRanges().some(range => {
-        const inside = position >= range.start - 2 && position <= range.end + 2;
-        const hasRoom = event.deltaY > 0 ? position < range.end - 2 : position > range.start + 2;
-        return inside && hasRoom;
-      });
-      if (wheelTarget === null && canReadFurther) return;
-      event.preventDefault();
-      // Finish the active glide; continued wheel input can then advance immediately.
-      if (wheelTarget !== null) return;
-      direction = Math.sign(event.deltaY);
-      const headerHeight = document.querySelector(".site-header").offsetHeight;
-      const maxScroll = document.documentElement.scrollHeight - innerHeight;
-      const stops = [...document.querySelectorAll(".hero, .work-section, .about-section")].flatMap(section => {
-        const rect = section.getBoundingClientRect();
-        const start = Math.max(0, Math.min(maxScroll, rect.top + window.scrollY - headerHeight));
-        const end = Math.max(start, Math.min(maxScroll, rect.bottom + window.scrollY - innerHeight));
-        const css = getComputedStyle(section);
-        const tall = section.offsetHeight - parseFloat(css.paddingTop) - parseFloat(css.paddingBottom) > innerHeight - headerHeight;
-        return tall ? [start, end] : [start];
-      });
-      stops.push(maxScroll);
-      const candidates = stops.filter(value => direction > 0 ? value > window.scrollY + 2 : value < window.scrollY - 2);
-      if (!candidates.length) return;
-      const target = direction > 0 ? Math.min(...candidates) : Math.max(...candidates);
-      animateTo(target);
-    };
-    const touchStart = () => { touchActive = true; interrupt(); };
-    const touchEnd = () => { touchActive = false; onScroll(); };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("keydown", interrupt);
-    window.addEventListener("pointerdown", interrupt);
-    window.addEventListener("resize", interrupt);
-    window.addEventListener("touchstart", touchStart, { passive: true });
-    window.addEventListener("touchend", touchEnd, { passive: true });
-    window.addEventListener("touchcancel", touchEnd, { passive: true });
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("wheel", onWheel);
-      cancelAnimationFrame(wheelFrame);
-      window.removeEventListener("keydown", interrupt);
-      window.removeEventListener("pointerdown", interrupt);
-      window.removeEventListener("resize", interrupt);
-      window.removeEventListener("touchstart", touchStart);
-      window.removeEventListener("touchend", touchEnd);
-      window.removeEventListener("touchcancel", touchEnd);
-    };
-  }, [reducedMotion]);
-
   const work = useMemo(
     () => [
       {
@@ -383,29 +249,39 @@ export default function Home() {
   }, [projects]);
 
   useEffect(() => {
-    if (currentProjectIndex === null) return;
-    projectFocusRef.current = true;
-    if (currentProjectIndex >= 4) setMoreProjectsOpen(true);
-    let frame;
+    if (currentProjectIndex !== null && currentProjectIndex >= 4) setMoreProjectsOpen(true);
+  }, [currentProjectIndex]);
+
+  useEffect(() => {
+    if (currentProjectIndex === null || pendingProjectCenter.current !== currentProjectIndex) return;
+    pendingProjectCenter.current = null;
     const row = document.getElementById(slugify(projects[currentProjectIndex].title));
-    const center = () => {
-      if (!projectFocusRef.current) return;
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const headerHeight = document.querySelector(".site-header").offsetHeight;
-        const rect = row.getBoundingClientRect();
-        const available = window.innerHeight - headerHeight;
-        // Oversized cards start below the header so their title remains accessible.
-        const top = window.scrollY + rect.top - headerHeight - Math.max(0, (available - rect.height) / 2);
-        window.scrollTo({ top, behavior: reducedMotion ? "instant" : "smooth" });
-      });
+    let frame;
+    const start = window.scrollY;
+    const startedAt = performance.now();
+    const duration = reducedMotion ? 0 : 180;
+    const cancel = () => cancelAnimationFrame(frame);
+    const center = now => {
+      const rect = row.getBoundingClientRect();
+      const headerHeight = document.querySelector(".site-header").offsetHeight;
+      const space = window.innerHeight - headerHeight;
+      const target = window.scrollY + rect.top - headerHeight - Math.max(0, (space - rect.height) / 2);
+      const progress = duration ? Math.min(1, (now - startedAt) / duration) : 1;
+      const eased = 1 - (1 - progress) ** 3;
+      window.scrollTo({ top: start + (target - start) * eased, behavior: "instant" });
+      if (progress < 1) frame = requestAnimationFrame(center);
     };
-    center();
-    const image = row.querySelector("img");
-    image?.addEventListener("load", center);
+    frame = requestAnimationFrame(center);
+    window.addEventListener("wheel", cancel, { passive: true });
+    window.addEventListener("touchstart", cancel, { passive: true });
+    window.addEventListener("pointerdown", cancel);
+    window.addEventListener("keydown", cancel);
     return () => {
-      cancelAnimationFrame(frame);
-      image?.removeEventListener("load", center);
+      cancel();
+      window.removeEventListener("wheel", cancel);
+      window.removeEventListener("touchstart", cancel);
+      window.removeEventListener("pointerdown", cancel);
+      window.removeEventListener("keydown", cancel);
     };
   }, [currentProjectIndex, projects, reducedMotion]);
 
@@ -419,16 +295,17 @@ export default function Home() {
     return (
       <motion.article {...reveal} transition={{ ...reveal.transition, delay: reducedMotion ? 0 : (projectIndex % 4) * 0.06 }} className={`project-row ${isOpen ? "is-open" : ""}`} id={id} key={project.title}>
         <button className="project-toggle" type="button" aria-expanded={isOpen} onClick={() => {
+          pendingProjectCenter.current = isOpen ? null : projectIndex;
           setCurrentProjectIndex(isOpen ? null : projectIndex);
           window.history.replaceState(null, "", isOpen ? window.location.pathname : `#${id}`);
         }}>
           <span className="project-name">{project.title}<span className="project-description">{project.description}</span></span>
           <span className="project-plus" aria-hidden="true">{isOpen ? <MinusIcon /> : <PlusIcon />}</span>
         </button>
-        {isOpen && <div className="project-detail">
+        <motion.div initial={false} animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }} transition={{ height: { duration: 0 }, opacity: { duration: reducedMotion ? 0 : 0.1 } }} style={{ overflow: "hidden" }} aria-hidden={!isOpen} inert={!isOpen}><div className="project-detail">
           {project.image && <div className="project-image"><img src={project.image} alt={`${project.title} screenshot`} /></div>}
-          <div className="project-detail-copy"><span className="eyebrow">Built with</span><div className="project-skills">{project.skills.map(skill => <span key={skill}>{skill}</span>)}</div>{project.link && <a className="text-link" href={project.link} target="_blank" rel="noopener noreferrer">Explore project <ArrowTopRightIcon aria-hidden="true" /></a>}</div>
-        </div>}
+          <motion.div className="project-detail-copy" initial={false} animate={{ opacity: isOpen ? 1 : 0, y: reducedMotion || isOpen ? 0 : 6 }} transition={{ duration: reducedMotion ? 0 : 0.1 }}><span className="eyebrow">Built with</span><div className="project-skills">{project.skills.map(skill => <span key={skill}>{skill}</span>)}</div>{project.link && <a className="text-link" href={project.link} target="_blank" rel="noopener noreferrer">Explore project <ArrowTopRightIcon aria-hidden="true" /></a>}</motion.div>
+        </div></motion.div>
       </motion.article>
     );
   };
@@ -451,7 +328,6 @@ export default function Home() {
       <motion.div className="scroll-progress" aria-hidden="true" style={{ scaleX: scrollYProgress }} />
       {titleBounds && <MotionLink className="animated-wordmark" href="/" scroll={false} onClick={event => {
         if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-        projectFocusRef.current = true;
         window.scrollTo({ top: 0, behavior: reducedMotion ? "instant" : "smooth" });
       }} aria-label="Sagar Bhola — home" aria-hidden={!wordmarkInHeader} tabIndex={wordmarkInHeader ? 0 : -1} style={{ left: titleBounds.left, width: titleBounds.width, x, y, scale, pointerEvents: wordmarkInHeader ? "auto" : "none" }}><span>SAGAR</span><span>BHOLA</span></MotionLink>}
       <div className="portfolio-shell">
@@ -468,10 +344,12 @@ export default function Home() {
         <section className="work-section" id="work" aria-labelledby="work-title">
           <motion.div {...reveal} className="section-heading"><div><h2 id="work-title">Projects</h2></div></motion.div>
           <div className="project-list">{featured.map(projectRow)}</div>
-          <details className="more-projects" open={moreProjectsOpen} onToggle={event => setMoreProjectsOpen(event.currentTarget.open)}>
-            <summary>{moreProjectsOpen ? "Show fewer projects" : "More projects"}{moreProjectsOpen ? <MinusIcon aria-hidden="true" /> : <PlusIcon aria-hidden="true" />}</summary>
-            <div className="project-list">{remaining.map(projectRow)}</div>
-          </details>
+          <div className="more-projects">
+            <button type="button" className="more-projects-toggle" aria-expanded={moreProjectsOpen} aria-controls="additional-projects" onClick={() => setMoreProjectsOpen(open => !open)}>{moreProjectsOpen ? "Show fewer projects" : "More projects"}</button>
+            <motion.div id="additional-projects" initial={false} animate={{ height: moreProjectsOpen ? "auto" : 0, opacity: moreProjectsOpen ? 1 : 0 }} transition={{ duration: reducedMotion ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }} style={{ overflow: "hidden" }} aria-hidden={!moreProjectsOpen} inert={!moreProjectsOpen}>
+              <div className="project-list">{remaining.map(projectRow)}</div>
+            </motion.div>
+          </div>
         </section>
 
         <section className="about-section" id="about" aria-labelledby="about-title">

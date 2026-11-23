@@ -343,9 +343,9 @@ html {
 .project-skills span { border: 1px solid var(--line); padding: 7px 10px; font-size: 11px; }
 .text-link { color: var(--acid); font-size: 13px; }
 .more-projects { border-top: 1px solid var(--line); }
-.more-projects summary { display: flex; align-items: center; justify-content: space-between; padding: 23px 0; cursor: pointer; list-style: none; font-size: 13px; font-weight: 650; }
-.more-projects summary::-webkit-details-marker { display: none; }
-.more-projects summary span { color: var(--acid); font-size: 20px; }
+.more-projects .more-projects-toggle { display: flex; align-items: center; justify-content: space-between; padding: 23px 0; cursor: pointer; list-style: none; font-size: 13px; font-weight: 650; }
+.more-projects .more-projects-toggle::-webkit-details-marker { display: none; }
+.more-projects .more-projects-toggle span { color: var(--acid); font-size: 20px; }
 .about-section { display: grid; grid-template-columns: 1fr 1fr; gap: 10%; border-top: 1px solid var(--line); padding: 80px 0 100px; }
 .about-intro h2 { font-size: clamp(36px, 4.5vw, 65px); line-height: 1.04; letter-spacing: -.065em; font-weight: 700; margin: 25px 0; }
 .about-intro h2 span { color: var(--muted); }
@@ -386,10 +386,10 @@ html {
 
 /* Simple, solid controls and readable supporting text. */
 .portfolio button, .portfolio summary, .portfolio a { border-radius: 0; }
-.hero-scroll, .nav-contact, .more-projects summary, .contact-button { display: inline-flex; align-items: center; justify-content: space-between; gap: 24px; padding: 15px 18px; background: #b8adc9; color: #111821; font-size: 14px; font-weight: 700; }
-.site-header nav .nav-contact:hover, .hero-scroll:hover, .more-projects summary:hover { color: #111821; background: #cec4dd; }
-.nav-contact span, .hero-scroll span, .more-projects summary span { display: inline; width: auto; height: auto; margin: 0; border: 0; border-radius: 0; color: inherit; font-size: 18px; }
-.more-projects summary { width: 100%; margin-top: 20px; }
+.hero-scroll, .nav-contact, .more-projects .more-projects-toggle, .contact-button { display: inline-flex; align-items: center; justify-content: space-between; gap: 24px; padding: 15px 18px; background: #b8adc9; color: #111821; font-size: 14px; font-weight: 700; }
+.site-header nav .nav-contact:hover, .hero-scroll:hover, .more-projects .more-projects-toggle:hover { color: #111821; background: #cec4dd; }
+.nav-contact span, .hero-scroll span, .more-projects .more-projects-toggle span { display: inline; width: auto; height: auto; margin: 0; border: 0; border-radius: 0; color: inherit; font-size: 18px; }
+.more-projects .more-projects-toggle { width: 100%; margin-top: 20px; }
 .eyebrow, .experience-date { font-size: 13px; letter-spacing: .03em; }
 .project-description, .experience-row small, .project-skills span, .portfolio-footer { font-size: 14px; }
 .hero h1 { margin-top: 95px; }
@@ -411,7 +411,7 @@ html {
 .work-section .project-skills span { background: #e6e9ec; border: 0; }
 .work-section .eyebrow { color: #46515d; }
 .work-section .more-projects { margin-top: 16px; }
-.work-section .more-projects summary { margin-top: 0; }
+.work-section .more-projects .more-projects-toggle { margin-top: 0; }
 .work-section .more-projects .project-list { margin-top: 8px; }
 .about-section { margin: 0 -5.56%; padding: 90px 5.56%; background: #1c252f; }
 .experience-row { background: #293340; padding: 18px; margin-bottom: 8px; }
@@ -435,8 +435,8 @@ html {
 .work-section .project-skills span { background: var(--surface); color: var(--ink); }
 .work-section .project-toggle:hover .project-name, .work-section .is-open .project-name, .experience-row:hover strong { color: var(--ink); text-decoration: underline; text-underline-offset: 5px; }
 .work-section .project-plus, .work-section .text-link { color: var(--ink); }
-.hero-scroll, .nav-contact, .more-projects summary, .contact-button { background: var(--accent); color: var(--accent-text); }
-.hero-scroll svg, .nav-contact svg, .more-projects summary svg, .contact-button svg, .project-plus svg { width: 20px; height: 20px; flex: none; }
+.hero-scroll, .nav-contact, .more-projects .more-projects-toggle, .contact-button { background: var(--accent); color: var(--accent-text); }
+.hero-scroll svg, .nav-contact svg, .more-projects .more-projects-toggle svg, .contact-button svg, .project-plus svg { width: 20px; height: 20px; flex: none; }
 .project-plus { display: flex; justify-content: flex-end; }
 .portfolio-footer a, .text-link { display: inline-flex; align-items: center; gap: 4px; }
 .experience-date svg { display: inline-block; vertical-align: middle; }
@@ -545,7 +545,7 @@ html {
 
 /* Keep button icons aligned and contained at every screen size. */
 .portfolio .nav-contact, .portfolio .hero-scroll,
-.portfolio .contact-button, .portfolio .more-projects summary {
+.portfolio .contact-button, .portfolio .more-projects .more-projects-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -554,19 +554,19 @@ html {
   line-height: 1.25;
 }
 .portfolio .nav-contact svg, .portfolio .hero-scroll svg,
-.portfolio .contact-button svg, .portfolio .more-projects summary svg {
+.portfolio .contact-button svg, .portfolio .more-projects .more-projects-toggle svg {
   display: block;
   width: 18px;
   height: 18px;
   flex: 0 0 18px;
 }
-.portfolio .more-projects summary { display: flex; width: 100%; }
+.portfolio .more-projects .more-projects-toggle { display: flex; width: 100%; }
 @media (max-width: 700px) {
   .portfolio .nav-contact { padding: 12px; }
 }
 
 .portfolio .nav-contact, .portfolio .hero-scroll,
-.portfolio .contact-button, .portfolio .more-projects summary {
+.portfolio .contact-button, .portfolio .more-projects .more-projects-toggle {
   min-height: 0;
   padding: 10px 14px;
 }
@@ -583,7 +583,7 @@ html {
 
 .site-header nav, .portfolio-footer { text-transform: uppercase; }
 
-.hero-scroll, .contact-button, .more-projects summary { text-transform: uppercase; }
+.hero-scroll, .contact-button, .more-projects .more-projects-toggle { text-transform: uppercase; }
 
 @media (max-width: 700px) {
   .site-header { justify-content: center; height: auto; min-height: 72px; }
@@ -748,15 +748,12 @@ body { overflow-x: clip; }
   box-shadow: none;
 }
 
-/* Gentle section snapping without trapping scrolling inside longer sections. */
+/* Smooth anchor navigation with room for the fixed header. */
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y proximity;
   scroll-padding-top: 94px;
 }
 .hero, .work-section, .about-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
   scroll-margin-top: 0;
 }
 #work, #about { scroll-margin-top: 0; }
@@ -778,7 +775,6 @@ html { scroll-snap-type: none; scroll-behavior: smooth; }
   min-height: calc(100svh - 94px);
   height: auto;
   scroll-snap-align: none;
-  scroll-snap-stop: normal;
 }
 .about-section { align-content: center; }
 @media (max-width: 700px) {
@@ -808,24 +804,61 @@ html { scroll-snap-type: none; scroll-behavior: smooth; }
 .contact-options svg { flex: 0 0 18px; width: 18px; height: 18px; }
 .contact-options a:hover { background: #cec4dd; }
 
-/* Settle each scroll gesture at the next section, allowing tall sections to scroll. */
-html {
-  scroll-snap-type: y mandatory;
-  scroll-padding-top: 94px;
-}
-.hero, .work-section, .about-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-@media (max-width: 700px) {
-  html { scroll-padding-top: 72px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-snap-type: none; }
-}
-
-/* Wheel navigation controls section advances; touch and keyboard stay native. */
-html { scroll-snap-type: none; }
-
 /* Keep the collapsed project collection within a desktop viewport where it fits. */
 .work-section { padding-top: clamp(24px, 4svh, 48px); padding-bottom: clamp(24px, 4svh, 48px); }
+
+/* Keep mobile navigation consistent and the hero action below its introduction. */
+@media (max-width: 700px) {
+  .portfolio .site-header {
+    height: 72px;
+    min-height: 72px;
+  }
+  .portfolio .site-header nav {
+    flex-wrap: nowrap;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .portfolio .site-header nav > a,
+  .portfolio .site-header nav > button {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    white-space: nowrap;
+  }
+  .portfolio .hero-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}
+
+/* A quiet text disclosure beneath the cards. */
+.portfolio .more-projects .more-projects-toggle {
+  display: block;
+  width: fit-content;
+  min-height: 44px;
+  margin: 8px 0;
+  padding: 10px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-transform: none;
+  cursor: pointer;
+  opacity: .8;
+  transition: opacity .15s ease;
+}
+.portfolio .more-projects .more-projects-toggle:hover {
+  background: transparent;
+  color: #fff;
+  opacity: 1;
+}
+.portfolio .more-projects .more-projects-toggle:focus-visible {
+  outline: 2px solid #b8adc9;
+  outline-offset: 4px;
+}
