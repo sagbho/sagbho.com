@@ -1,43 +1,88 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect, useMemo } from "react";
-import {
-  EnvelopeClosedIcon,
-  FileTextIcon,
-  GitHubLogoIcon,
-  LinkedInLogoIcon,
-} from "@radix-ui/react-icons";
-
-
+import Image from "next/image";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { ArrowUpIcon, ArrowTopRightIcon, PlusIcon, MinusIcon, EnvelopeClosedIcon, LinkedInLogoIcon, CheckCircledIcon } from "@radix-ui/react-icons";
+import { motion, useScroll, useTransform, useSpring, useReducedMotion, useMotionValueEvent } from "framer-motion";
+const MotionLink = motion.create(Link);
 const slugify = (title) => title.toLowerCase().replace(/\s+/g, "-");
-
-const SOCIAL_LINKS = [
-  {
-    label: "View my projects",
-    href: "https://github.com/sagbho",
-    Icon: GitHubLogoIcon,
-  },
-  {
-    label: "Connect with me",
-    href: "https://www.linkedin.com/in/sagar-bhola/",
-    Icon: LinkedInLogoIcon,
-  },
-  {
-    label: "Send me an email",
-    href: "mailto:sagbho@umich.edu",
-    Icon: EnvelopeClosedIcon,
-  },
-  {
-    label: "View my résumé",
-    href: "/resume",
-    Icon: FileTextIcon,
-  },
-];
-
 
 export default function Home() {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(null);
+  const [moreProjectsOpen, setMoreProjectsOpen] = useState(false);
+  const contactRef = useRef(null);
+  const pendingProjectCenter = useRef(null);
+  const [copyStatus, setCopyStatus] = useState("");
+  const openContact = async () => {
+    setCopyStatus("Copying email…");
+    contactRef.current?.showModal();
+    try {
+      await navigator.clipboard.writeText("sagbho@umich.edu");
+      setCopyStatus("Email copied to clipboard.");
+    } catch {
+      setCopyStatus("Couldn’t copy automatically. You can select the email below.");
+    }
+  };
+  const titleRef = useRef(null);
+  const [titleBounds, setTitleBounds] = useState(null);
+  const { scrollY, scrollYProgress } = useScroll();
+  const reducedMotion = useReducedMotion();
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const reveal = {
+    initial: { opacity: 1, y: 0 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: false, amount: 0.08, margin: "0px 0px -32px 0px" },
+    transition: { duration: reducedMotion ? 0 : 0.4, ease: "easeOut" },
+  };
+  if (!reducedMotion) reveal.initial = { opacity: 0, y: 14 };
+  const travel = titleBounds ? Math.max(120, titleBounds.top - titleBounds.targetTop) : 160;
+  const progress = useTransform(scrollY, [0, travel], [0, 1]);
+  const smoothProgress = useSpring(progress, { stiffness: 500, damping: 45, mass: 0.15 });
+  const reducedProgress = useTransform(progress, value => value > 0 ? 1 : 0);
+  const displayProgress = reducedMotion ? reducedProgress : smoothProgress;
+  const [wordmarkInHeader, setWordmarkInHeader] = useState(false);
+  useMotionValueEvent(displayProgress, "change", value => {
+    const compact = value >= 0.999;
+    if (compact !== wordmarkInHeader) setWordmarkInHeader(compact);
+  });
+  const [introHidden, setIntroHidden] = useState(false);
+  const introHiddenRef = useRef(false);
+  useMotionValueEvent(displayProgress, "change", (value) => {
+    const hidden = value > 0.001 || scrollY.get() > 1;
+    if (hidden !== introHiddenRef.current) {
+      introHiddenRef.current = hidden;
+      setIntroHidden(hidden);
+    }
+  });
+  const scale = useTransform(displayProgress, [0, 1], [1, titleBounds?.finalScale ?? 0.15]);
+  const y = useTransform(displayProgress, [0, 1], [titleBounds?.top ?? 160, titleBounds?.targetTop ?? 12]);
 
+  const heroClip = useTransform(scrollY, (scroll) => {
+    if (!titleBounds) return "inset(0px 0px 0px 0px)";
+    const covered = Math.max(0, scroll + titleBounds.headerHeight - titleBounds.heroTop);
+    return `inset(${covered}px 0px 0px 0px)`;
+  });
+
+  const x = useTransform(displayProgress, [0, 1], [0, titleBounds?.targetX ?? 0]);
+
+  useEffect(() => {
+    let active = true;
+    const measure = () => {
+      if (!active || !titleRef.current) return;
+      const rect = titleRef.current.getBoundingClientRect();
+      const header = document.querySelector(".site-header").getBoundingClientRect();
+      const hero = document.querySelector(".hero").getBoundingClientRect();
+      const finalScale = Math.min(90 / rect.width, 44 / rect.height);
+      setTitleBounds({ top: rect.top + window.scrollY, left: rect.left, width: rect.width, height: rect.height,
+        heroTop: hero.top + window.scrollY, headerHeight: header.height,
+        finalScale, targetTop: (header.height - rect.height * finalScale) / 2,
+        targetX: header.left - rect.left });
+    };
+    measure();
+    document.fonts.ready.then(measure);
+    window.addEventListener("resize", measure);
+    return () => { active = false; window.removeEventListener("resize", measure); };
+  }, []);
   const work = useMemo(
     () => [
       {
@@ -80,16 +125,6 @@ export default function Home() {
 
   const projects = useMemo(
     () => [
-      {
-        title: "Vision-Based Autonomous Driving Agent",
-        description:
-          "A reinforcement learning agent trained to navigate a simulated driving environment using visual input.",
-        link: "",
-        date: "2026",
-        image: "/vbd.png",
-        skills: ["Python", "PyTorch", "Reinforcement Learning", "Computer Vision", "DXcam", "OpenCV"],
-      },
-      
       {
         title: "AI Invoice Processor",
         description:
@@ -205,13 +240,7 @@ export default function Home() {
       const index = projects.findIndex((p) => slugify(p.title) === hash);
       setCurrentProjectIndex(index !== -1 ? index : null);
 
-      if (index !== -1) {
-        requestAnimationFrame(() => {
-          document.getElementById(hash)?.scrollIntoView({
-            block: "center",
-          });
-        });
-      }
+
     };
 
     focusProjectFromHash();
@@ -219,153 +248,116 @@ export default function Home() {
     return () => window.removeEventListener("hashchange", focusProjectFromHash);
   }, [projects]);
 
+  useEffect(() => {
+    if (currentProjectIndex !== null && currentProjectIndex >= 4) setMoreProjectsOpen(true);
+  }, [currentProjectIndex]);
+
+  useEffect(() => {
+    if (currentProjectIndex === null || pendingProjectCenter.current !== currentProjectIndex) return;
+    pendingProjectCenter.current = null;
+    const row = document.getElementById(slugify(projects[currentProjectIndex].title));
+    let frame;
+    const start = window.scrollY;
+    const startedAt = performance.now();
+    const duration = reducedMotion ? 0 : 180;
+    const cancel = () => cancelAnimationFrame(frame);
+    const center = now => {
+      const rect = row.getBoundingClientRect();
+      const headerHeight = document.querySelector(".site-header").offsetHeight;
+      const space = window.innerHeight - headerHeight;
+      const target = window.scrollY + rect.top - headerHeight - Math.max(0, (space - rect.height) / 2);
+      const progress = duration ? Math.min(1, (now - startedAt) / duration) : 1;
+      const eased = 1 - (1 - progress) ** 3;
+      window.scrollTo({ top: start + (target - start) * eased, behavior: "instant" });
+      if (progress < 1) frame = requestAnimationFrame(center);
+    };
+    frame = requestAnimationFrame(center);
+    window.addEventListener("wheel", cancel, { passive: true });
+    window.addEventListener("touchstart", cancel, { passive: true });
+    window.addEventListener("pointerdown", cancel);
+    window.addEventListener("keydown", cancel);
+    return () => {
+      cancel();
+      window.removeEventListener("wheel", cancel);
+      window.removeEventListener("touchstart", cancel);
+      window.removeEventListener("pointerdown", cancel);
+      window.removeEventListener("keydown", cancel);
+    };
+  }, [currentProjectIndex, projects, reducedMotion]);
+
+  const featured = projects.slice(0, 4);
+  const remaining = projects.slice(4);
+
+  const projectRow = (project) => {
+    const projectIndex = projects.indexOf(project);
+    const isOpen = currentProjectIndex === projectIndex;
+    const id = slugify(project.title);
+    return (
+      <motion.article {...reveal} transition={{ ...reveal.transition, delay: reducedMotion ? 0 : (projectIndex % 4) * 0.06 }} className={`project-row ${isOpen ? "is-open" : ""}`} id={id} key={project.title}>
+        <button className="project-toggle" type="button" aria-expanded={isOpen} onClick={() => {
+          pendingProjectCenter.current = isOpen ? null : projectIndex;
+          setCurrentProjectIndex(isOpen ? null : projectIndex);
+          window.history.replaceState(null, "", isOpen ? window.location.pathname : `#${id}`);
+        }}>
+          <span className="project-name">{project.title}<span className="project-description">{project.description}</span></span>
+          <span className="project-plus" aria-hidden="true">{isOpen ? <MinusIcon /> : <PlusIcon />}</span>
+        </button>
+        <motion.div initial={false} animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }} transition={{ height: { duration: 0 }, opacity: { duration: reducedMotion ? 0 : 0.1 } }} style={{ overflow: "hidden" }} aria-hidden={!isOpen} inert={!isOpen}><div className="project-detail">
+          {project.image && <div className="project-image"><img src={project.image} alt={`${project.title} screenshot`} /></div>}
+          <motion.div className="project-detail-copy" initial={false} animate={{ opacity: isOpen ? 1 : 0, y: reducedMotion || isOpen ? 0 : 6 }} transition={{ duration: reducedMotion ? 0 : 0.1 }}><span className="eyebrow">Built with</span><div className="project-skills">{project.skills.map(skill => <span key={skill}>{skill}</span>)}</div>{project.link && <a className="text-link" href={project.link} target="_blank" rel="noopener noreferrer">Explore project <ArrowTopRightIcon aria-hidden="true" /></a>}</motion.div>
+        </div></motion.div>
+      </motion.article>
+    );
+  };
+
   return (
-    <>
-      <main className="font-mono">
-        <div className="mx-auto min-h-screen w-full max-w-5xl px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
-          <div className="w-full max-w-2xl">
-          <section>
-            <div className="flex flex-row items-start justify-between gap-4 sm:items-center">
-              <div className="opacity-0 animate-slide-down">
-                <Link href="/" className="min-w-0 text-5xl italic tracking-tight opacity-0 animate-slide-down font-editorial sm:text-7xl lg:text-8xl">Sagar Bhola</Link>
-                <p className="text-lg font-lausanne text-neutral-400 pt-4">Engineer of the future.</p>
-              </div>
-              <div className="ml-auto flex shrink-0 flex-col items-end justify-between gap-2 text-right">
-                {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-                  <Link
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    className="group relative flex h-5 w-5 self-end items-center justify-end"
-                  >
-                    <span className="pointer-events-none absolute right-7 top-1/2 hidden -translate-y-1/2 translate-x-2 whitespace-nowrap text-xs lowercase tracking-[0.12em] opacity-0 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 sm:block">
-                      {label}
-                    </span>
-                    <Icon width="20" height="20" />
-                  </Link>
-                ))}
-              </div>
-            </div>
-            
-          </section>
-          <section className="flex w-full flex-col gap-10 pt-12 opacity-0 animate-slide-up">
-            <div>
-            <h1 className="uppercase text-xs pb-3 text-neutral-400">Bio</h1>
-            <p className="max-w-xl text-sm leading-relaxed">
-              University of Michigan Computer Science graduate, class of 2025.
-            </p>
-            </div>
-            <div>
-              <h1 className="uppercase text-xs pb-3 text-neutral-400">Work</h1>
-              {work.map((job, index) => (
-                <div key={index}>
-                  <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:gap-3">
-                    <div className="min-w-0">
-                      <Link href={job.link} target="_blank" className="text-lg tracking-tighter font-lausanne hover:text-blue-300 duration-200">{job.company}</Link>
-                      <p className="max-w-md text-xs leading-relaxed text-neutral-400">
-                        <span className="text-white/60 font-semibold">{job.role}</span> -  {job.description}
-                      </p>
-                    </div>
-                    <p className="shrink-0 text-xs sm:text-right">{job.startDate} to {job.endDate}</p>
-                  </div>
-                  {index < work.length - 1 && <hr className="my-4 border-neutral-700" />}
-                </div>
-              ))}
-            </div>
-            <div>
-              <h1 className="uppercase text-xs pb-3 text-neutral-400">Projects</h1>
-              {projects.map((project, index) => (
-                <div
-                  id={slugify(project.title)}
-                  key={project.title}
-                  className="relative scroll-mt-20"
-                >
-                  <button
-                    type="button"
-                    className={`w-full cursor-pointer py-1 text-left transition-colors ${
-                      currentProjectIndex === index ? "bg-neutral-800/40" : ""
-                    }`}
-                    onClick={() => {
-                      const hash = slugify(project.title);
-                      setCurrentProjectIndex(index);
-                      window.history.pushState(null, "", `#${hash}`);
-                    }}
-                  >
-                    <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:gap-3">
-                      <div className="min-w-0">
-                        <span className="text-lg font-lausanne hover:text-blue-300 duration-200">{project.title}</span>
-                        <p className="max-w-md text-xs leading-relaxed text-neutral-400">
-                          {project.description}
-                        </p>
-                      </div>
-                      <p className="shrink-0 text-xs sm:text-right">{project.date}</p>
-                    </div>
-                  </button>
+    <main className="portfolio">
+      <dialog ref={contactRef} className="contact-dialog" aria-labelledby="contact-title" onClick={(event) => {
+        if (event.target === event.currentTarget) {
+          const rect = event.currentTarget.getBoundingClientRect();
+          if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) event.currentTarget.close();
+        }
+      }}>
+        <div className="contact-dialog-heading"><h2 id="contact-title">Get in touch</h2><button type="button" autoFocus onClick={() => contactRef.current?.close()} aria-label="Close contact options">Close</button></div>
+        <p>Choose how you’d like to connect.</p>
+        <p className="contact-email">sagbho@umich.edu</p>
+        <p className={`contact-status${copyStatus === "Email copied to clipboard." ? " is-success" : ""}`} role="status">{copyStatus === "Email copied to clipboard." && <CheckCircledIcon aria-hidden="true" />}{copyStatus}</p>
+        <div className="contact-options"><a href="mailto:sagbho@umich.edu"><EnvelopeClosedIcon aria-hidden="true" />Email</a><a href="https://www.linkedin.com/in/sagar-bhola/" target="_blank" rel="noopener noreferrer"><LinkedInLogoIcon aria-hidden="true" />LinkedIn</a></div>
+      </dialog>
+      <motion.div className="portfolio-background" aria-hidden="true" style={{ y: reducedMotion ? 0 : backgroundY }} />
+      <motion.div className="scroll-progress" aria-hidden="true" style={{ scaleX: scrollYProgress }} />
+      {titleBounds && <MotionLink className="animated-wordmark" href="/" scroll={false} onClick={event => {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        window.scrollTo({ top: 0, behavior: reducedMotion ? "instant" : "smooth" });
+      }} aria-label="Sagar Bhola — home" aria-hidden={!wordmarkInHeader} tabIndex={wordmarkInHeader ? 0 : -1} style={{ left: titleBounds.left, width: titleBounds.width, x, y, scale, pointerEvents: wordmarkInHeader ? "auto" : "none" }}><span>SAGAR</span><span>BHOLA</span></MotionLink>}
+      <div className="portfolio-shell">
+        <motion.header className="site-header" style={{ "--header-progress": displayProgress }}>
+          <nav aria-label="Main navigation"><a href="#work">Work</a><a href="#about">About</a><button type="button" onClick={openContact} className="nav-contact" aria-haspopup="dialog">Let’s talk</button></nav>
+        </motion.header>
 
-                  <div
-                    className={`overflow-hidden transition-all duration-500 ease-out xl:absolute xl:left-[calc(100%+2rem)] xl:top-0 xl:w-80 ${
-                      currentProjectIndex === index
-                        ? "mt-4 max-h-[560px] translate-x-0 opacity-100 xl:mt-0"
-                        : "max-h-0 translate-x-4 opacity-0"
-                    }`}
-                  >
-                    <div className="border-l border-neutral-700 pl-4">
-                      <div className="relative aspect-video w-full overflow-hidden bg-neutral-900/60 sm:aspect-[4/3]">
-                        {project.image ? (
-                          <img
-                            src={project.image}
-                            alt={`${project.title} screenshot`}
-                            className="h-full w-full object-contain"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center px-6 text-center text-xs text-neutral-400">
-                            {project.title}
-                          </div>
-                        )}
-                      </div>
-                      <div className="pt-3">
-                        <p className="pb-2 text-[10px] uppercase tracking-[0.12em] text-neutral-400">
-                          Skills
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {project.skills.map((skill) => (
-                            <span
-                              key={skill}
-                              className="border border-neutral-700 px-2 py-1 text-[10px] lowercase"
-                            >
-                              {skill}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                      {project.link && (
-                        <Link
-                          href={project.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="mt-3 inline-block text-xs underline decoration-neutral-600 underline-offset-4 hover:text-blue-300 duration-200"
-                        >
-                          open project
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                  {index < projects.length - 1 && <hr className="my-4 border-neutral-700" />}
-                </div>
-              ))}
-            </div>
-          </section>
-          <section className="py-12 text-xs font-mono uppercase opacity-0 animate-slide-up">
-                  <Link href="/" >^ Back to top ^</Link>
+        <motion.section className="hero" aria-labelledby="hero-title" style={{ clipPath: heroClip }}>
+          
+          <div className="wordmark-slot"><h1 ref={titleRef} style={{ opacity: titleBounds ? 0 : 1 }} id="hero-title">SAGAR<br /><span>BHOLA</span></h1></div>
+          <motion.div className="hero-bottom" animate={{ opacity: introHidden ? 0 : 1 }} transition={{ duration: reducedMotion ? 0 : 0.12, ease: "easeOut" }} style={{ pointerEvents: introHidden ? "none" : "auto" }} aria-hidden={introHidden}><p>Building technology that<br />people can trust.</p><a href="#work" className="hero-scroll" tabIndex={introHidden ? -1 : 0}>Explore my work</a></motion.div>
+        </motion.section>
 
-          </section>
+        <section className="work-section" id="work" aria-labelledby="work-title">
+          <motion.div {...reveal} className="section-heading"><div><h2 id="work-title">Projects</h2></div></motion.div>
+          <div className="project-list">{featured.map(projectRow)}</div>
+          <div className="more-projects">
+            <button type="button" className="more-projects-toggle" aria-expanded={moreProjectsOpen} aria-controls="additional-projects" onClick={() => setMoreProjectsOpen(open => !open)}>{moreProjectsOpen ? "Show fewer projects" : "More projects"}</button>
+            <motion.div id="additional-projects" initial={false} animate={{ height: moreProjectsOpen ? "auto" : 0, opacity: moreProjectsOpen ? 1 : 0 }} transition={{ duration: reducedMotion ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }} style={{ overflow: "hidden" }} aria-hidden={!moreProjectsOpen} inert={!moreProjectsOpen}>
+              <div className="project-list">{remaining.map(projectRow)}</div>
+            </motion.div>
           </div>
-        </div>
-      </main>
-    </>
+        </section>
+
+        <section className="about-section" id="about" aria-labelledby="about-title">
+          <motion.div {...reveal} className="about-intro"><h2 id="about-title">Making technology<br /><span>safer to use.</span></h2><Image src="/files/IMG_0988%202.jpg" alt="Sagar Bhola" width={88} height={88} className="about-portrait" unoptimized /><p>I’m Sagar, a University of Michigan computer science graduate interested in computer security, cybersecurity, and networks. I want to help make technology safer and more trustworthy for the people who use it.</p><button type="button" onClick={openContact} className="contact-button" aria-haspopup="dialog">Get in touch</button></motion.div>
+          <motion.div {...reveal} className="experience"><div className="experience-heading"><span className="eyebrow">Experience</span></div>{work.map(job => <a className="experience-row" key={job.company} href={job.link} target="_blank" rel="noopener noreferrer"><span><strong>{job.company}</strong><small>{job.role}</small></span><span className="experience-date">{job.startDate} — {job.endDate} <ArrowTopRightIcon aria-hidden="true" /></span></a>)}</motion.div>
+        </section>
+        <footer className="portfolio-footer"><span>© {new Date().getFullYear()} Sagar Bhola</span><div><a href="https://github.com/sagbho" target="_blank" rel="noopener noreferrer">GitHub <ArrowTopRightIcon aria-hidden="true" /></a><a href="https://www.linkedin.com/in/sagar-bhola/" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowTopRightIcon aria-hidden="true" /></a><Link href="/resume">Résumé <ArrowTopRightIcon aria-hidden="true" /></Link></div><a className="back-to-top" href="#top" onClick={(event) => { event.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Back to top <ArrowUpIcon aria-hidden="true" /></a></footer>
+      </div>
+    </main>
   );
 }
-
-
